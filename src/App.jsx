@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './Components/AuthContext'
 import Home from './Pages/Home'
 import Scheduler from './Pages/Scheduler'
-import { Login } from './pages/Login'
+import { Login } from './Pages/Login'
 import Roster from './Pages/Roster'
 import Compliance from './Pages/Compliance'
 import NewUser from './Pages/NewUser'
