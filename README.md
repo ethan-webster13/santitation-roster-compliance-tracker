@@ -57,6 +57,7 @@ React 19 · React Router · Context API · Vite
 
 ```bash
 npm install
+npm install react-router-dom
 npm run dev
 ```
 
