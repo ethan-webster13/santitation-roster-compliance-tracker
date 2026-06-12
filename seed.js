@@ -1,7 +1,13 @@
+// seed.js
 import { createClient } from 'redis';
+import dotenv from 'dotenv';
 
+// Tell Node to read variables out of your .env.local file
+dotenv.config({ path: '.env.local' });
+
+// Notice there are NO quotes around process.env.REDIS_URL
 const client = createClient({
-    url: 'process.env.REDIS_URL' // Change this to your production URL if needed
+    url: process.env.REDIS_URL
 });
 
 const fakeEmployees = [
@@ -22,7 +28,6 @@ async function seedDatabase() {
         console.log('Connecting to Redis...');
         await client.connect();
 
-        // Redis only stores strings, so we must stringify the array
         await client.set('liveRoster', JSON.stringify(fakeEmployees));
         
         console.log('Successfully seeded 10 fake employees into "liveRoster"!');

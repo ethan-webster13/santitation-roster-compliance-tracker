@@ -1,13 +1,12 @@
 // api/roster.js
 import { createClient } from 'redis';
 
-// Re-use the client across serverless invocations if possible
 let client;
 
 export default async function handler(req, res) {
-    // Add CORS headers so your local React dev server can talk to it
+    // Enable CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
@@ -15,9 +14,17 @@ export default async function handler(req, res) {
     }
 
     try {
+        // Fallback to local machine if REDIS_URL environment variable isn't loaded properly
+        // api/roster.js
+const redisUrl = process.env.KV_URL || process.env.REDIS_URL || 'redis://localhost:6379';
+
         if (!client) {
-            client = createClient({ url: process.env.REDIS_URL });
-            client.on('error', (err) => console.error('Redis Client Error', err));
+            console.log('Initializing Redis client with URL:', redisUrl);
+            client = createClient({ url: redisUrl });
+            client.on('error', (err) => console.error('Redis Client Connection Error:', err));
+        }
+
+        if (!client.isOpen) {
             await client.connect();
         }
 
@@ -26,6 +33,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ success: true, roster });
     } catch (error) {
+        console.error("API ROUTE CRASHED:", error);
         return res.status(500).json({ success: false, error: error.message });
     }
 }
