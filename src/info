@@ -1,0 +1,19 @@
+Project 2: Dynamic Site Shift Scheduler & Compliance Tracker
+This dashboard app showcases your ability to handle strict data rules, form validation, and complex state relationships (linking employees to shifts and logs).
+
+Core Features to Build:
+
+Team Roster Management Tab:
+A view where a manager can add, edit, or remove employees.
+Each profile tracks key data: Name, Role (Laborer, Lead, Supervisor), and Active/Inactive status.
+
+Interactive Shift Dispatch Grid:
+A visual grid where you select a date and assign active employees to specific "Work Zones" or "Rooms."
+Add a warning system: If a manager accidentally schedules an employee to two different zones at the same time, throw a visual error alert preventing the conflict.
+
+Digital Compliance & Quality Log:
+A strict form for recording daily technical metrics (e.g., Chemical Titration levels, Pre-operational Safety Checkmarks, or USDA Audit results).
+Data Validation: Implement an absolute parameter engine. For example, if a chemical titration reading must be between $2.0$ and $4.5$, typing in $1.8$ instantly highlights the input field in red and generates a "NON-COMPLIANT: Immediate Correction Required" warning banner.
+
+
+Manager's Compliance Checklist Widget: A sidebar showing a dynamic checklist of critical tasks that must be completed before the day can be "released" (e.g., Roster Filled, Safety Check Completed, Titration Logged).
