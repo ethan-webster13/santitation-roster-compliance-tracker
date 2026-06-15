@@ -18,7 +18,6 @@ function App() {
         <Routes>
           <Route path='/login' element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/signup" element={<PublicRoute><NewUser /></PublicRoute>} />
-          <Route path='/unauthorized' element={<PublicRoute><Unauthorized /></PublicRoute>} />
 
           <Route path='/admin' element={
             <ProtectedRoute allowedRoles={["manager"]}>
@@ -39,14 +38,15 @@ function App() {
               <Roster />
             </ProtectedRoute>} />
           <Route path='/compliance' element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["manager", "supervisor"]}>
               <Compliance />
             </ProtectedRoute>} />
           <Route path='/scheduler' element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["manager", "supervisor"]}>
               <Scheduler />
             </ProtectedRoute>} />
           
+          <Route path='/unauthorized' element={<Unauthorized />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </AuthProvider>
@@ -58,8 +58,10 @@ const PageNotFound = () => {
   return <h2>404 Page Not Found. Whoops! We can't find the page you're looking for.</h2> 
 };
 
-const Unauthorized = () => {
-  return <h2>You do not have permissions to view this content</h2>
-}
-
+const Unauthorized = () => (
+  <div style={{ padding: "2rem", textAlign: "center" }}>
+    <h2>Access denied</h2>
+    <p>You don't have permission to view this page.</p>
+  </div>
+);
 export default App
