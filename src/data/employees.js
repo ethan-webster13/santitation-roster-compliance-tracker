@@ -56,7 +56,7 @@ const employees = [
         id: 7,
         firstName: "Luis",
         lastName: "Garcia",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "processing line",
         hWorked: 40
     },
@@ -64,7 +64,7 @@ const employees = [
         id: 8,
         firstName: "James",
         lastName: "Smith",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "processing line",
         hWorked: 38
     },
@@ -72,7 +72,7 @@ const employees = [
         id: 9,
         firstName: "Elena",
         lastName: "Rostova",
-        role: "sanitation technician",
+        role: "laborer",
         additionalRole: "chemical specialist", 
         zone: "processing line",
         hWorked: 42
@@ -81,7 +81,7 @@ const employees = [
         id: 10,
         firstName: "Omar",
         lastName: "Hassan",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "processing line",
         hWorked: 40
     },
@@ -91,7 +91,7 @@ const employees = [
         id: 11,
         firstName: "Jackson",
         lastName: "Brooks",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "packaging",
         hWorked: 38
     },
@@ -99,7 +99,7 @@ const employees = [
         id: 12,
         firstName: "Marcus",
         lastName: "Vance",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "packaging",
         hWorked: 40
     },
@@ -107,7 +107,7 @@ const employees = [
         id: 13,
         firstName: "Chloe",
         lastName: "Davis",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "packaging",
         hWorked: 36
     },
@@ -115,7 +115,7 @@ const employees = [
         id: 14,
         firstName: "Liam",
         lastName: "O'Connor",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "packaging",
         hWorked: 40
     },
@@ -125,7 +125,7 @@ const employees = [
         id: 15,
         firstName: "Jose",
         lastName: "Ramirez",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "kill floor",
         hWorked: 45
     },
@@ -133,7 +133,7 @@ const employees = [
         id: 16,
         firstName: "DeAndre",
         lastName: "Washington",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "kill floor",
         hWorked: 40
     },
@@ -141,7 +141,7 @@ const employees = [
         id: 17,
         firstName: "Carlos",
         lastName: "Mendoza",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "kill floor",
         hWorked: 42
     },
@@ -149,7 +149,7 @@ const employees = [
         id: 18,
         firstName: "Anita",
         lastName: "Patel",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "kill floor",
         hWorked: 40
     },
@@ -159,7 +159,7 @@ const employees = [
         id: 19,
         firstName: "William",
         lastName: "Taylor",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "fabrication & boning",
         hWorked: 40
     },
@@ -167,7 +167,7 @@ const employees = [
         id: 20,
         firstName: "Jessica",
         lastName: "Nguyen",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "fabrication & boning",
         hWorked: 39
     },
@@ -175,7 +175,7 @@ const employees = [
         id: 21,
         firstName: "Thomas",
         lastName: "Wright",
-        role: "sanitation technician",
+        role: "laborer",
         zone: "fabrication & boning",
         hWorked: 40
     },
@@ -183,7 +183,7 @@ const employees = [
         id: 22,
         firstName: "Robert",
         lastName: "Evans",
-        role: "sanitation technician",
+        role: "laborer",
         additionalRole: "chemical specialist",
         zone: "fabrication & boning",
         hWorked: 41
