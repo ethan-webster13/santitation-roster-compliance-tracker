@@ -1,14 +1,5 @@
 [
-  {
-    "id": 1,
-    "username": "admin",
-    "password": "admin",
-    "role": "Manager"
-  },
-  {
-    "id": 2,
-    "username": "scheduler2",
-    "password": "securepassword",
-    "role": "Scheduler"
-  }
+  { "id": 1, "username": "ethan",      "password": "admin", "role": "manager"    },
+  { "id": 2, "username": "supervisor", "password": "pass123", "role": "supervisor" },
+  { "id": 3, "username": "viewer",     "password": "pass123", "role": "readonly"   }
 ]

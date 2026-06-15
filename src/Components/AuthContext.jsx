@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
@@ -39,3 +40,30 @@ export const AuthProvider = ({ children }) => {
 
 
 export const useAuth = () => useContext(AuthContext);
+
+export const useRole = () => {
+  const { user } = useContext(AuthContext);
+  return {
+    role: user?.role ?? null,
+    isManager: user?.role === "manager",
+    isSupervisor: user?.role === "supervisor",
+    isReadOnly: user?.role === "readonly"
+  }
+};
+
+export const PublicRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  return !isAuthenticated ? children : <Navigate to="/home" replace />;
+};
+
+export const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { isAuthenticated, user, loading } = useAuth();
+
+  if (loading) return null;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  return children;
+};
