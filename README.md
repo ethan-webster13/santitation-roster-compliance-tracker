@@ -18,7 +18,8 @@ in food-safety operations.
 | Role      | Username     | Password         |
 | --------- | ------------ | ---------------- |
 | Manager   | `admin`     | `admin`       |
-| Scheduler | `scheduler2` | `securepassword` |
+| Supervisor | `supervisor` | `pass123` |
+| Viewer | `viewer` | `pass123`
 
 ## Why I built this
 
