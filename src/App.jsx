@@ -5,25 +5,33 @@ import Scheduler from './Pages/Scheduler'
 import { Login } from './Pages/Login'
 import Roster from './Pages/Roster'
 import Compliance from './Pages/Compliance'
-import NewUser from './Pages/NewUser'
+import NewEmp from './Pages/NewEmp'
 import './App.css'
 import AdminPage from './Pages/AdminPage'
 
 
 
 function App() {
+
+  
   return (
     <Router>
       <AuthProvider>
         <Routes>
           <Route path='/login' element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="/signup" element={<PublicRoute><NewUser /></PublicRoute>} />
+          {/*<Route path="/signup" element={<PublicRoute><NewEmp /></PublicRoute>} />*/}
 
           <Route path='/admin' element={
             <ProtectedRoute allowedRoles={["manager"]}>
               <AdminPage />
             </ProtectedRoute>
           } /> 
+          <Route path='/addnewemp' element={
+            <ProtectedRoute allowedRoles={["manager"]}>
+              <NewEmp />
+            </ProtectedRoute>
+          } />
+
 
           <Route path='/' element={
             <ProtectedRoute>

@@ -1,12 +1,16 @@
-import { useState } from "react";
 import NavBar from "../Components/NavBar";
-import employees from "../data/employees";
+import NewEmp from "./NewEmp";
 import { useAuth, useRole } from "../Components/AuthContext";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useRoster } from "../context/RosterContext";
 
 const Roster = () => {
-  const [liveRoster, setLiveRoster] = useState(employees);
   const { user } = useAuth();
   const { isManager, isSupervisor } = useRole();
+  const navigate = useNavigate();
+  const { liveRoster, deleteEmployee } = useRoster();
+  console.log("Current Context Data:", liveRoster)
+
 
   return (
     <>
@@ -16,7 +20,7 @@ const Roster = () => {
         <h3>Roster Page</h3>
         {/* Only managers see this button — supervisors and read-only do not */}
         {isManager && (
-          <button onClick={() => console.log("Add employee clicked")}>
+          <button onClick={()=>navigate('/addnewEmp')}>
             + Add Employee
           </button>
         )}
@@ -30,8 +34,9 @@ const Roster = () => {
       <table>
         <thead>
           <tr>
-            <th>Employee Name</th>
-            <th>Employee Role</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th> Role</th>
             <th>Zone</th>
             <th>Hours this week</th>
             {/* Actions column only renders for manager or supervisor */}
@@ -39,18 +44,18 @@ const Roster = () => {
           </tr>
         </thead>
         <tbody>
-          {liveRoster.map((item) => (
-            <tr key={item.id}>
-              <td>{item.firstName} {item.lastName}</td>
-              <td>{item.role}</td>
-              <td>{item.zone}</td>
-              <td>{item.hWorked}</td>
+          {liveRoster.map((worker) => (
+            <tr key={worker.id}>
+              <td>{worker.id}</td>
+              <td>{worker.firstName} {worker.lastName}</td>
+              <td>{worker.role}</td>
+              <td>{worker.zone}</td>
+              <td>{worker.hWorked}</td>
               {(isManager || isSupervisor) && (
                 <td>
-                  {/* Manager can edit AND remove; supervisor can only edit */}
-                  <button onClick={() => console.log("Edit", item.id)}>Edit</button>
+                  <button onClick={() => console.log("Edit", worker.id)}>Edit</button>
                   {isManager && (
-                    <button onClick={() => console.log("Remove", item.id)}>
+                    <button onClick={deleteEmployee(worker.id)}>
                       Remove
                     </button>
                   )}

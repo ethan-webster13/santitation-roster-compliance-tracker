@@ -1,4 +1,4 @@
-const employees = [
+const initialEmployees = [
     // --- SUPERVISORS (2) ---
     {
         id: 1,
@@ -190,4 +190,4 @@ const employees = [
     }
 ];
 
-export default employees;
+export default initialEmployees;
