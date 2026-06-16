@@ -8,6 +8,7 @@ const Roster = () => {
   const { user } = useAuth();
   const { isManager, isSupervisor } = useRole();
   const navigate = useNavigate();
+
   const { liveRoster, deleteEmployee } = useRoster();
   console.log("Current Context Data:", liveRoster)
 
@@ -44,7 +45,7 @@ const Roster = () => {
           </tr>
         </thead>
         <tbody>
-          {liveRoster.map((worker) => (
+          {liveRoster && liveRoster.map((worker) => (
             <tr key={worker.id}>
               <td>{worker.id}</td>
               <td>{worker.firstName} {worker.lastName}</td>
@@ -55,7 +56,7 @@ const Roster = () => {
                 <td>
                   <button onClick={() => console.log("Edit", worker.id)}>Edit</button>
                   {isManager && (
-                    <button onClick={deleteEmployee(worker.id)}>
+                    <button onClick={()=>deleteEmployee(worker.id)}>
                       Remove
                     </button>
                   )}
