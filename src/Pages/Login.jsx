@@ -39,6 +39,12 @@ export const Login = () => {
     }
   };
 
+  const demoCredentials = [
+    { "id": 1, "username": "admin",      "password": "admin", "role": "manager"    },
+    { "id": 2, "username": "supervisor", "password": "pass123", "role": "supervisor" },
+    { "id": 3, "username": "viewer",     "password": "pass123", "role": "readonly"   }
+  ];
+
   return (
     <>
       <div className="login-container">
@@ -69,6 +75,15 @@ export const Login = () => {
 
       <div>
         Not a user? <button type="button">Sign up</button>
+
+        <div style={{ border: '1px solid black', padding: '10px', marginTop: '20px' }}>
+  <strong>Demo Accounts:</strong>
+  {demoCredentials.map(user => (
+    <div key={user.id} style={{ marginTop: '10px' }}>
+      <span>{user.role} - User: {user.username} | Pass: {user.password}</span>
+    </div>
+  ))}
+</div>
       </div>
     </>
   );
