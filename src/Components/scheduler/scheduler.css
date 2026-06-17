@@ -95,3 +95,42 @@
   color: #33691e;
   border-color: rgba(51, 105, 30, 0.2);
 }
+
+/* --- Drag and Drop Usability Enhancements --- */
+.unassigned-sidebar {
+  background-color: #f1f3f5;
+  border: 2px dashed #ced4da;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.unassigned-bench {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  min-height: 50px;
+  align-items: center;
+}
+
+.employee-badge.draggable {
+  cursor: grab;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.employee-badge.draggable:active {
+  cursor: grabbing;
+  transform: scale(0.96);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.shift-zone.drag-hover {
+  background-color: #fffde7 !important; /* Soft yellow highlight on hover */
+  border-color: #fbc02d !important;
+}
+
+.unassigned-bench.drag-hover {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+}

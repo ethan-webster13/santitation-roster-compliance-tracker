@@ -1,18 +1,49 @@
-import React from "react";
+import { useState } from "react";
 import EmployeeBadge from "./EmployeeBadge";
+import { useRoster } from "../../context/RosterContext";
 
-const ShiftZone = ({ zoneName }) => {
-    //temp data to test roles
-    const sampleEmployees = [
-    { id: 1, firstName: 'Fred', role: 'supervisor' },
-    { id: 3, firstName: 'Sarah', role: 'sanitation lead' }
-  ];
+const ShiftZone = ({ areaId, zoneName }) => {
+    const { liveRoster, assignments, assignEmployee } = useRoster();
+    const [isDragOver, setIsDragOver] = useState(false);
+
+    //Look at our global assignments map and filter out ONLY the workers who belong to this exact zone
+    const assignedWorkers = liveRoster.filter( emp=>
+        assignments[emp.id]?.areaId === areaId && assignments[emp.id]?.zoneName === zoneName
+    );
+
+    const handleDragOver = (e) => {
+        /* OVERRIDING THE BROWSER DEFAULT:
+            By default, web browsers block you from dropping items onto random layout shapes like divs.
+            If you try, your mouse cursor turns into a red "cannot drop" circle.
+            Running e.preventDefault() tells the browser: "Hey, turn off that protection. I am authorizing this div to be a landing pad."
+        */
+        e.preventDefault();
+    };
+
+    // This fires when the user lets go of the mouse button over this specific box
+    const handleDrop = (e) => {
+        e.preventDefault(); // Stops the browser from doing default action
+        setIsDragOver(false); // Turns off the visual hover highlight color
+
+        // Open the browser's "backpack" and grab the employee ID string we packed inside EmployeeBadge.jsx
+        const empId = parseInt(e.dataTransfer.getData("text/plain"), 10);
+        if (empId) {
+            // Send the ID to the Context state to officially update their scheduled location
+            assignEmployee(empId, areaId, zoneName)
+        }
+    };
 
   return (
-    <div className="shift-zone">
+    <div 
+      className={`shift-zone ${isDragOver ? 'drag-hover' : ''}`}
+      onDragOver={handleDragOver}
+      onDragEnter={() => setIsDragOver(true)}
+      onDragLeave={() => setIsDragOver(false)}
+      onDrop={handleDrop}
+    >
         <h4 className="shift-zone-title">{zoneName}</h4>
         <div className="badge-container" >
-            {sampleEmployees.map(emp => (
+            {assignedWorkers.map(emp => (
                 <EmployeeBadge key={emp.id} employee={emp}/>
             ))}
         </div>

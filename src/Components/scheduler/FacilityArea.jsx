@@ -1,7 +1,7 @@
 import React from "react";
 import ShiftZone from "./ShiftZone";
 
-const FacilityArea = ({ title, zones }) => {
+const FacilityArea = ({ areaId, title, zones }) => {
 
 
     return (
@@ -10,7 +10,7 @@ const FacilityArea = ({ title, zones }) => {
             
             <div className="shift-zone-grid">
                 {zones.map((zoneName, index) => (
-                    <ShiftZone key={index} zoneName={zoneName}/>
+                    <ShiftZone key={index} areaId={areaId} zoneName={zoneName} />
                 ))}
             </div>
         </div>
