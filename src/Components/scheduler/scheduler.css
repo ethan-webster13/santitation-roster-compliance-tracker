@@ -28,7 +28,7 @@
 
 .shift-zone-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2x2 Sub-Zones inside the card */
+  grid-template-columns: 1fr 1fr; 
   gap: 12px;
   margin-top: 15px;
 }

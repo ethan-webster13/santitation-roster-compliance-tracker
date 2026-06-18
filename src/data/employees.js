@@ -6,7 +6,7 @@ const initialEmployees = [
         lastName: "Miller",
         role: "supervisor",
         zone: "processing & packaging floor",
-        hWorked: 40
+        isAbsent: false
     },
     {
         id: 2,
@@ -14,7 +14,7 @@ const initialEmployees = [
         lastName: "Morgan",
         role: "supervisor",
         zone: "cut floor",
-        hWorked: 48
+        isAbsent: false
     },
 
     // --- LEADS (4) ---
@@ -24,7 +24,7 @@ const initialEmployees = [
         lastName: "Jenkins",
         role: "sanitation lead",
         zone: "processing line",
-        hWorked: 46
+        isAbsent: false
     },
     {
         id: 4,
@@ -32,7 +32,7 @@ const initialEmployees = [
         lastName: "Chen",
         role: "sanitation lead",
         zone: "packaging",
-        hWorked: 42
+        isAbsent: false
     },
     {
         id: 5,
@@ -40,7 +40,7 @@ const initialEmployees = [
         lastName: "Santos",
         role: "sanitation lead",
         zone: "kill floor",
-        hWorked: 45
+        isAbsent: false
     },
     {
         id: 6,
@@ -48,7 +48,7 @@ const initialEmployees = [
         lastName: "Torres",
         role: "sanitation lead",
         zone: "fabrication & boning",
-        hWorked: 44
+        isAbsent: false
     },
 
     // --- PROCESSING LINE CREW (4) ---
@@ -58,7 +58,7 @@ const initialEmployees = [
         lastName: "Garcia",
         role: "laborer",
         zone: "processing line",
-        hWorked: 40
+        isAbsent: false
     },
     {
         id: 8,
@@ -66,7 +66,7 @@ const initialEmployees = [
         lastName: "Smith",
         role: "laborer",
         zone: "processing line",
-        hWorked: 38
+        isAbsent: false
     },
     {
         id: 9,
@@ -75,7 +75,7 @@ const initialEmployees = [
         role: "laborer",
         additionalRole: "chemical specialist", 
         zone: "processing line",
-        hWorked: 42
+        isAbsent: false
     },
     {
         id: 10,
@@ -83,7 +83,7 @@ const initialEmployees = [
         lastName: "Hassan",
         role: "laborer",
         zone: "processing line",
-        hWorked: 40
+        isAbsent: false
     },
 
     // --- PACKAGING CREW (4) ---
@@ -93,7 +93,7 @@ const initialEmployees = [
         lastName: "Brooks",
         role: "laborer",
         zone: "packaging",
-        hWorked: 38
+        isAbsent: false
     },
     {
         id: 12,
@@ -101,7 +101,7 @@ const initialEmployees = [
         lastName: "Vance",
         role: "laborer",
         zone: "packaging",
-        hWorked: 40
+        isAbsent: false
     },
     {
         id: 13,
@@ -109,7 +109,7 @@ const initialEmployees = [
         lastName: "Davis",
         role: "laborer",
         zone: "packaging",
-        hWorked: 36
+        isAbsent: false
     },
     {
         id: 14,
@@ -117,7 +117,7 @@ const initialEmployees = [
         lastName: "O'Connor",
         role: "laborer",
         zone: "packaging",
-        hWorked: 40
+        isAbsent: false
     },
 
     // --- KILL FLOOR CREW (4) ---
@@ -127,7 +127,7 @@ const initialEmployees = [
         lastName: "Ramirez",
         role: "laborer",
         zone: "kill floor",
-        hWorked: 45
+        isAbsent: false
     },
     {
         id: 16,
@@ -135,7 +135,7 @@ const initialEmployees = [
         lastName: "Washington",
         role: "laborer",
         zone: "kill floor",
-        hWorked: 40
+        isAbsent: false
     },
     {
         id: 17,
@@ -143,7 +143,7 @@ const initialEmployees = [
         lastName: "Mendoza",
         role: "laborer",
         zone: "kill floor",
-        hWorked: 42
+        isAbsent: false
     },
     {
         id: 18,
@@ -151,7 +151,7 @@ const initialEmployees = [
         lastName: "Patel",
         role: "laborer",
         zone: "kill floor",
-        hWorked: 40
+        isAbsent: false
     },
 
     // --- FABRICATION & BONING CREW (4) ---
@@ -161,7 +161,7 @@ const initialEmployees = [
         lastName: "Taylor",
         role: "laborer",
         zone: "fabrication & boning",
-        hWorked: 40
+        isAbsent: false
     },
     {
         id: 20,
@@ -169,7 +169,7 @@ const initialEmployees = [
         lastName: "Nguyen",
         role: "laborer",
         zone: "fabrication & boning",
-        hWorked: 39
+        isAbsent: false
     },
     {
         id: 21,
@@ -177,7 +177,7 @@ const initialEmployees = [
         lastName: "Wright",
         role: "laborer",
         zone: "fabrication & boning",
-        hWorked: 40
+        isAbsent: false
     },
     {
         id: 22,
@@ -186,7 +186,7 @@ const initialEmployees = [
         role: "laborer",
         additionalRole: "chemical specialist",
         zone: "fabrication & boning",
-        hWorked: 41
+        isAbsent: false
     }
 ];
 

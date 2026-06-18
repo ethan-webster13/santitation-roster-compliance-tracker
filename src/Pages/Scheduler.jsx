@@ -6,12 +6,67 @@ import { useRoster } from "../context/RosterContext";
 import initialLayoutData from "../data/layoutData";
 import '../Components/scheduler/scheduler.css'
 
+
 const Scheduler = () => {
     const [facilityData, setFacilityData] = useState(initialLayoutData);
     const { liveRoster, assignments, unassignEmployee } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
 
-    const unassignedWorkers = liveRoster.filter(emp => !assignments[emp.id]);
+    //Total Zones, Dynamic if more zones/areas added/removed later
+    const totalRequiredZones = facilityData.reduce((acc, area) => acc + area.zones.length, 0);
+
+    //Count zones that currently have employee assigned.
+    const filledZonesCount = facilityData.reduce((acc, area) => {
+        const filledInArea = area.zones.filter(zoneName => 
+            Object.values(assignments).some(asg => asg.areaId === area.id && asg.zoneName === zoneName)).length;
+            return acc + filledInArea
+    }, 0);
+
+    const allAreasFilled = filledZonesCount === totalRequiredZones;
+
+    const handleLogShift = () => {
+        if (!allAreasFilled) return;
+
+        // Build a formatted text file payload resembling an official shift roster sheet
+        let logText = `FACILITY SANITATION COMPLIANCE LOG\n`;
+        logText += `Date: ${new Date().toLocaleDateString()}\n`;
+        logText += `Status: 100% Coverage secured \n`;
+        logText += `==========================================\n\n`;
+
+        facilityData.forEach(area => {
+            logText += `Area: ${area.title}\n`;
+            area.zones.forEach(zoneName => {
+                const assignedEmpId = Object.keys(assignments).find(empId =>
+                    assignments[empId].areaId === area.id && assignments[empId].zoneName === zoneName
+                );
+                
+                if (assignedEmpId) {
+                    const worker = liveRoster.find(emp=> emp.id.toString() === assignedEmpId.toString());
+                    if (worker) {
+                        logText += ` - [${zoneName}]: ${worker.firstName} ${worker.lastName} (${worker.role.toUpperCase()})\n`;
+                    }
+                } else {
+                    logText += ` - [${zoneName}]: UNASSIGNED (VACANT)\n`;
+                }
+            });
+            logText += `\n`;
+        });
+
+        const blob = new Blob([logText], {type: "text/plain;charset=utf-8"});
+        const fileUrl = URL.createObjectURL(blob);
+
+        //Create temp link element, click to trigger download, then discard link
+        const downloadLink = document.createElement("a");
+        downloadLink.href = fileUrl;
+        downloadLink.download = `sanitation-compliance-log-${new Date().toISOString().split('T')[0]}.txt`;
+        downloadLink.click();
+        URL.revokeObjectURL(fileUrl)
+    };
+
+
+
+    //worker shows on bench ONLY IF: They have no active assignment coordinate and they are NOT marked absent
+    const unassignedWorkers = liveRoster.filter(emp => !assignments[emp.id] && !emp.isAbsent);
 
     // This fires when a card is dragged out of a zone and dropped back onto the top bench area
     const handleDropOnBench = (e) => {
@@ -21,7 +76,7 @@ const Scheduler = () => {
         // Grab the employee ID out of the event's data backpack
         const empId = parseInt(e.dataTransfer.getData("text/plain"), 10);
 
-        /* If we find an ID, remove their location mapping from our Context state.
+        /* If find the ID, remove their location mapping from our Context state.
             Because they no longer have a location, React automatically moves them back into the unassigned bench list */
         if (empId) unassignEmployee(empId)
     };
@@ -31,6 +86,33 @@ const Scheduler = () => {
             <NavBar />
             <div className="scheduler-container">
                 <h2>Facility Shift Scheduler</h2>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                        <button
+                            onClick={handleLogShift}
+                            disabled={!allAreasFilled}
+                            style={{
+                                padding: '10px 20px',
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                                color: 'white',
+                                backgroundColor: allAreasFilled ? '#2e7d32' : '#9e9e9e',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: allAreasFilled ? 'pointer' : 'not-allowed',
+                                transition: 'background-color 0.2s ease'
+                            }}
+                        >
+                            Log Shift & Export
+                        </button>
+                        <span style={{ fontSize: '0.8rem', marginTop: '5px', color: allAreasFilled ? '#2e7d32' : '#d32f2f' }}>
+                            {allAreasFilled 
+                                ? "✅ Ready: All stations fully manned." 
+                                : `⚠️ Coverage: ${filledZonesCount}/${totalRequiredZones} areas assigned.`
+                            }
+                        </span>
+                    </div>
+
 
                 <div className={`unassigned-sidebar ${isHovered ? 'drag-hover' : ''}`}
                     onDragOver={(e) => e.preventDefault()}

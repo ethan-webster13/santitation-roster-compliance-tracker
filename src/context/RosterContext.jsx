@@ -40,7 +40,19 @@ export const RosterProvider = ({ children }) =>{
         delete updated[empId]; // Erases their location key so they go back to the bench
         return updated;
       })
-    }
+    };
+
+    const toggleAbsence = (empId) => {
+      const targetEmployee = liveRoster.find(emp => emp.id ===empId);
+      if (targetEmployee && !targetEmployee.isAbsent) {
+        unassignEmployee(empId);
+      }
+      setLiveRoster(prevRoster=>
+        prevRoster.map(emp =>
+          emp.id === empId ? {...emp, isAbsent: !emp.isAbsent } : emp
+        )
+      )
+    };
 
   return (
     <RosterContext.Provider value={{ 
@@ -49,7 +61,9 @@ export const RosterProvider = ({ children }) =>{
       deleteEmployee,
       assignments,
       assignEmployee,
-      unassignEmployee}}>
+      unassignEmployee,
+      toggleAbsence
+      }}>
       {children}
     </RosterContext.Provider>
   );

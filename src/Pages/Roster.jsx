@@ -9,7 +9,7 @@ const Roster = () => {
   const { isManager, isSupervisor } = useRole();
   const navigate = useNavigate();
 
-  const { liveRoster, deleteEmployee } = useRoster();
+  const { liveRoster, deleteEmployee, toggleAbsence} = useRoster();
   console.log("Current Context Data:", liveRoster)
 
 
@@ -39,9 +39,8 @@ const Roster = () => {
             <th>Name</th>
             <th> Role</th>
             <th>Zone</th>
-            <th>Hours this week</th>
             {/* Actions column only renders for manager or supervisor */}
-            {(isManager || isSupervisor) && <th>Actions</th>}
+            {(isManager || isSupervisor) && <th>Actions / Attendance</th>}
           </tr>
         </thead>
         <tbody>
@@ -51,9 +50,16 @@ const Roster = () => {
               <td>{worker.firstName} {worker.lastName}</td>
               <td>{worker.role}</td>
               <td>{worker.zone}</td>
-              <td>{worker.hWorked}</td>
               {(isManager || isSupervisor) && (
                 <td>
+                  <label>
+                    <input 
+                      type="checkbox" 
+                      checked={worker.isAbsent || false}
+                      onChange={()=>toggleAbsence(worker.id)}
+                    />
+                    <span style={{marginRight: '2vw'}}>Mark Absent</span>
+                  </label>
                   <button onClick={() => console.log("Edit", worker.id)}>Edit</button>
                   {isManager && (
                     <button onClick={()=>deleteEmployee(worker.id)}>
