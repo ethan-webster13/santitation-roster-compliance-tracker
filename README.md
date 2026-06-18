@@ -5,8 +5,7 @@ sanitation-compliance status across a facility. Built to digitize the kind of
 paper-and-clipboard tracking I managed firsthand as a sanitation site supervisor
 in food-safety operations.
 
-<!-- Add a screenshot or short GIF of the dashboard here — it's the first thing people look at.
-     Example: ![Dashboard](./screenshot.png) -->
+
 
 ## Live demo
 
@@ -67,5 +66,3 @@ with one of the demo accounts above. Requires Node.js and npm (Node 20+ recommen
 
 ## What I learned
 
-<!-- One or two honest sentences. The protected-route + auth-context pattern is a
-     great thing to describe here — what was tricky and how you worked it out. -->
