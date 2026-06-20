@@ -11,12 +11,8 @@ const MetricsBar = () => {
     completedLogs: 4,
     totalLogsRequired: 5
   }
-  const { liveRoster, totalRequiredZones, filledZonesCount } = useRoster();
+  const { filledZonesCount, totalRequiredZones, totalEmployees, activeEmployees } = useRoster();
 
-
-  
-  const totalEmployees = liveRoster.length;
-  const activeEmployees = liveRoster.filter(emp=> !emp.isAbsent).length;
 
 
 
@@ -39,7 +35,7 @@ return (
         <div className="metric-data">
           <h3>Zones</h3>
           <p className="metric-value">
-            {totalRequiredZones} {/*metrics.unassignedZones > 0 ? `${metrics.unassignedZones} Open Zones` : '0 Conflicts' */}
+            {`${filledZonesCount} / ${totalRequiredZones}`} {/*metrics.unassignedZones > 0 ? `${metrics.unassignedZones} Open Zones` : '0 Conflicts' */}
           </p>
         </div>
       </div>

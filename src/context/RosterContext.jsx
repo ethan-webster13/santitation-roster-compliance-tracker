@@ -11,11 +11,12 @@ export const RosterProvider = ({ children }) =>{
   const [liveRoster, setLiveRoster] = useState(initialEmployees);
   
   const totalEmployees = useMemo(()=> {
-    return liveRoster.length
-  })
+    return liveRoster.length;
+  }, [liveRoster])
   const activeEmployees = useMemo(()=> {
+    return liveRoster.filter(emp=> !emp.isAbsent).length;
+  }, [liveRoster]);
 
-  })
   const addEmployee = (newEmp) => setLiveRoster(prev => [...prev, newEmp]);
       const deleteEmployee = (id) => {
         setLiveRoster(prev => prev.filter(emp => emp.id !== id));
@@ -92,6 +93,8 @@ export const RosterProvider = ({ children }) =>{
       addEmployee,
       deleteEmployee,
       totalRequiredZones,
+      totalEmployees,
+      activeEmployees,
       filledZonesCount,
       assignments,
       assignEmployee,
