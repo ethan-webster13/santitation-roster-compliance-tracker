@@ -9,8 +9,7 @@ const Roster = () => {
   const { isManager, isSupervisor } = useRole();
   const navigate = useNavigate();
 
-  const { liveRoster, deleteEmployee, toggleAbsence} = useRoster();
-  console.log("Current Context Data:", liveRoster)
+  const { liveRoster, deleteEmployee, toggleAbsence } = useRoster();
 
 
   return (
@@ -27,7 +26,7 @@ const Roster = () => {
         )}
       </div>
 
-      {/* Show who is viewing — useful for debugging and impresses interviewers */}
+      {/* Show who is viewing for debugging purposes*/}
       <p style={{ fontSize: "0.85rem", color: "#666" }}>
         Viewing as: {user?.username} ({user?.role})
       </p>

@@ -9,18 +9,11 @@ import '../Components/scheduler/scheduler.css'
 
 const Scheduler = () => {
     const [facilityData, setFacilityData] = useState(initialLayoutData);
-    const { liveRoster, assignments, unassignEmployee } = useRoster();
+    const { liveRoster, assignments, unassignEmployee, totalRequiredZones, filledZonesCount } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
 
     //Total Zones, Dynamic if more zones/areas added/removed later
-    const totalRequiredZones = facilityData.reduce((acc, area) => acc + area.zones.length, 0);
 
-    //Count zones that currently have employee assigned.
-    const filledZonesCount = facilityData.reduce((acc, area) => {
-        const filledInArea = area.zones.filter(zoneName => 
-            Object.values(assignments).some(asg => asg.areaId === area.id && asg.zoneName === zoneName)).length;
-            return acc + filledInArea
-    }, 0);
 
     const allAreasFilled = filledZonesCount === totalRequiredZones;
 
