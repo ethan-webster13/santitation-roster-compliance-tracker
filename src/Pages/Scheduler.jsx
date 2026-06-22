@@ -9,13 +9,14 @@ import '../Components/scheduler/scheduler.css'
 
 const Scheduler = () => {
     const [facilityData, setFacilityData] = useState(initialLayoutData);
-    const { liveRoster, assignments, unassignEmployee, totalRequiredZones, filledZonesCount } = useRoster();
+    const { liveRoster, assignments, unassignEmployee, totalRequiredZones, filledZonesCount, autoAssignWorkers, activeEmployees, clearBoard } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
 
     //Total Zones, Dynamic if more zones/areas added/removed later
 
 
     const allAreasFilled = filledZonesCount === totalRequiredZones;
+    const hasAssignments = Object.keys(assignments).length > 0;
 
     const handleLogShift = () => {
         if (!allAreasFilled) return;
@@ -78,9 +79,92 @@ const Scheduler = () => {
         <>
             <NavBar />
             <div className="scheduler-container">
+
+                <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center',
+                    marginBottom: '25px',
+                    borderBottom: '2px solid #f0f0f0',
+                    paddingBottom: '15px'
+                }}>
+                    <h2>Facility Shift Scheduler</h2>
+                    
+                    {/* Action Button Toolbar Container */}
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+
+                        {/* 🗑️ THE CLEAR BOARD BUTTON */}
+                        <button
+                            onClick={clearBoard}
+                            disabled={!hasAssignments}
+                            style={{
+                                padding: '10px 16px',
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                                backgroundColor: !hasAssignments ? '#e0e0e0' : '#fff1f0',
+                                color: !hasAssignments ? '#a0a0a0' : '#cf1322',
+                                border: !hasAssignments ? 'none' : '1px solid #ffa39e',
+                                borderRadius: '4px',
+                                cursor: !hasAssignments ? 'not-allowed' : 'pointer',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            🗑️ Clear Board
+                        </button>
+                        
+                        {/* ⚡ THE AUTO-ASSIGN BUTTON */}
+                        <button
+                            onClick={autoAssignWorkers}
+                            disabled={unassignedWorkers.length === 0 || allAreasFilled}
+                            style={{
+                                padding: '10px 20px',
+                                fontSize: '1rem',
+                                fontWeight: 'bold',
+                                color: 'white',
+                                backgroundColor: (unassignedWorkers.length === 0 || allAreasFilled) ? '#e0e0e0' : '#6200ee',
+                                color: (unassignedWorkers.length === 0 || allAreasFilled) ? '#a0a0a0' : 'white',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: (unassignedWorkers.length === 0 || allAreasFilled) ? 'not-allowed' : 'pointer',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            ⚡ Auto-Assign Crew
+                        </button>
+
+                        {/* 💾 THE LOG SHIFT BUTTON */}
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                            <button
+                                onClick={handleLogShift}
+                                disabled={!allAreasFilled}
+                                style={{
+                                    padding: '10px 20px',
+                                    fontSize: '1rem',
+                                    fontWeight: 'bold',
+                                    color: 'white',
+                                    backgroundColor: allAreasFilled ? '#2e7d32' : '#9e9e9e',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: allAreasFilled ? 'pointer' : 'not-allowed',
+                                    transition: 'background-color 0.2s ease'
+                                }}
+                            >
+                                Log Shift & Export
+                            </button>
+                            <span style={{ fontSize: '0.8rem', marginTop: '5px', color: allAreasFilled ? '#2e7d32' : '#d32f2f' }}>
+                                {allAreasFilled 
+                                    ? "✅ Ready: All stations fully manned." 
+                                    : `⚠️ Coverage: ${filledZonesCount}/${totalRequiredZones} areas assigned.`
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
                 <h2>Facility Shift Scheduler</h2>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    {/*<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                         <button
                             onClick={handleLogShift}
                             disabled={!allAreasFilled}
@@ -104,7 +188,7 @@ const Scheduler = () => {
                                 : `⚠️ Coverage: ${filledZonesCount}/${totalRequiredZones} areas assigned.`
                             }
                         </span>
-                    </div>
+                    </div> */}
 
 
                 <div className={`unassigned-sidebar ${isHovered ? 'drag-hover' : ''}`}
