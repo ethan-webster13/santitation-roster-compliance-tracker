@@ -134,3 +134,105 @@
   background-color: #e8f5e9;
   border-color: #4caf50;
 }
+
+/* ==========================================================================
+   Management Action Toolbar & Layout Controls
+   ========================================================================== */
+
+.scheduler-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.toolbar-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Common toolbar button specifications */
+.toolbar-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.toolbar-container button:not(:disabled) {
+    cursor: pointer;
+}
+
+/* Global button state handling via browser engine overrides */
+.toolbar-container button:disabled {
+    background-color: #e0e0e0 !important;
+    color: #a0a0a0 !important;
+    border: none !important;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* 🗑️ Clear Board Button Settings */
+.btn-clear {
+    padding: 10px 16px !important;
+    background-color: #fff1f0;
+    color: #cf1322;
+    border: 1px solid #ffa39e !important;
+}
+
+.btn-clear:hover:not(:disabled) {
+    background-color: #ffccc7;
+}
+
+/* ⚡ Auto-Assign Button Settings */
+.btn-auto {
+    background-color: #6200ee;
+    color: white;
+}
+
+.btn-auto:hover:not(:disabled) {
+    background-color: #4b00b4;
+    box-shadow: 0 2px 8px rgba(98, 0, 238, 0.25);
+}
+
+/* 💾 Log Shift Layout Wrapper */
+.log-shift-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.btn-log {
+    background-color: #2e7d32;
+    color: white;
+}
+
+.btn-log:hover:not(:disabled) {
+    background-color: #1b5e20;
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+}
+
+/* Status Messaging Context Signals */
+.status-message {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.status-message.ready {
+    color: #2e7d32;
+}
+
+.status-message.pending {
+    color: #d32f2f;
+}
+
+.bench-empty-text {
+    color: #888;
+    font-size: 0.9rem;
+}

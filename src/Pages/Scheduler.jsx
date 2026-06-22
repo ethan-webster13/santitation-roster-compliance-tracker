@@ -4,24 +4,29 @@ import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import { useRoster } from "../context/RosterContext";
 import initialLayoutData from "../data/layoutData";
-import '../Components/scheduler/scheduler.css'
-
+import '../Components/scheduler/scheduler.css';
 
 const Scheduler = () => {
     const [facilityData, setFacilityData] = useState(initialLayoutData);
-    const { liveRoster, assignments, unassignEmployee, totalRequiredZones, filledZonesCount, autoAssignWorkers, activeEmployees, clearBoard } = useRoster();
+    const { 
+        liveRoster, 
+        assignments, 
+        unassignEmployee, 
+        totalRequiredZones, 
+        filledZonesCount, 
+        autoAssignWorkers, 
+        clearBoard 
+    } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
 
-    //Total Zones, Dynamic if more zones/areas added/removed later
-
-
+    // Derived Utility States
     const allAreasFilled = filledZonesCount === totalRequiredZones;
     const hasAssignments = Object.keys(assignments).length > 0;
+    const unassignedWorkers = liveRoster.filter(emp => !assignments[emp.id] && !emp.isAbsent);
 
     const handleLogShift = () => {
         if (!allAreasFilled) return;
 
-        // Build a formatted text file payload resembling an official shift roster sheet
         let logText = `FACILITY SANITATION COMPLIANCE LOG\n`;
         logText += `Date: ${new Date().toLocaleDateString()}\n`;
         logText += `Status: 100% Coverage secured \n`;
@@ -35,7 +40,7 @@ const Scheduler = () => {
                 );
                 
                 if (assignedEmpId) {
-                    const worker = liveRoster.find(emp=> emp.id.toString() === assignedEmpId.toString());
+                    const worker = liveRoster.find(emp => emp.id.toString() === assignedEmpId.toString());
                     if (worker) {
                         logText += ` - [${zoneName}]: ${worker.firstName} ${worker.lastName} (${worker.role.toUpperCase()})\n`;
                     }
@@ -46,33 +51,21 @@ const Scheduler = () => {
             logText += `\n`;
         });
 
-        const blob = new Blob([logText], {type: "text/plain;charset=utf-8"});
+        const blob = new Blob([logText], { type: "text/plain;charset=utf-8" });
         const fileUrl = URL.createObjectURL(blob);
 
-        //Create temp link element, click to trigger download, then discard link
         const downloadLink = document.createElement("a");
         downloadLink.href = fileUrl;
         downloadLink.download = `sanitation-compliance-log-${new Date().toISOString().split('T')[0]}.txt`;
         downloadLink.click();
-        URL.revokeObjectURL(fileUrl)
+        URL.revokeObjectURL(fileUrl);
     };
 
-
-
-    //worker shows on bench ONLY IF: They have no active assignment coordinate and they are NOT marked absent
-    const unassignedWorkers = liveRoster.filter(emp => !assignments[emp.id] && !emp.isAbsent);
-
-    // This fires when a card is dragged out of a zone and dropped back onto the top bench area
     const handleDropOnBench = (e) => {
         e.preventDefault();
         setIsHovered(false);
-
-        // Grab the employee ID out of the event's data backpack
         const empId = parseInt(e.dataTransfer.getData("text/plain"), 10);
-
-        /* If find the ID, remove their location mapping from our Context state.
-            Because they no longer have a location, React automatically moves them back into the unassigned bench list */
-        if (empId) unassignEmployee(empId)
+        if (empId) unassignEmployee(empId);
     };
 
     return (
@@ -80,78 +73,36 @@ const Scheduler = () => {
             <NavBar />
             <div className="scheduler-container">
 
-                <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    marginBottom: '25px',
-                    borderBottom: '2px solid #f0f0f0',
-                    paddingBottom: '15px'
-                }}>
+                {/* ─── MANAGEMENT TOOLBAR HEADER ─── */}
+                <div className="scheduler-header">
                     <h2>Facility Shift Scheduler</h2>
                     
-                    {/* Action Button Toolbar Container */}
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-
-                        {/* 🗑️ THE CLEAR BOARD BUTTON */}
+                    <div className="toolbar-container">
                         <button
                             onClick={clearBoard}
                             disabled={!hasAssignments}
-                            style={{
-                                padding: '10px 16px',
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                                backgroundColor: !hasAssignments ? '#e0e0e0' : '#fff1f0',
-                                color: !hasAssignments ? '#a0a0a0' : '#cf1322',
-                                border: !hasAssignments ? 'none' : '1px solid #ffa39e',
-                                borderRadius: '4px',
-                                cursor: !hasAssignments ? 'not-allowed' : 'pointer',
-                                transition: 'all 0.2s ease'
-                            }}
+                            className="btn-clear"
                         >
                             🗑️ Clear Board
                         </button>
                         
-                        {/* ⚡ THE AUTO-ASSIGN BUTTON */}
                         <button
                             onClick={autoAssignWorkers}
                             disabled={unassignedWorkers.length === 0 || allAreasFilled}
-                            style={{
-                                padding: '10px 20px',
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                                color: 'white',
-                                backgroundColor: (unassignedWorkers.length === 0 || allAreasFilled) ? '#e0e0e0' : '#6200ee',
-                                color: (unassignedWorkers.length === 0 || allAreasFilled) ? '#a0a0a0' : 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: (unassignedWorkers.length === 0 || allAreasFilled) ? 'not-allowed' : 'pointer',
-                                transition: 'all 0.2s ease'
-                            }}
+                            className="btn-auto"
                         >
                             ⚡ Auto-Assign Crew
                         </button>
 
-                        {/* 💾 THE LOG SHIFT BUTTON */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                        <div className="log-shift-group">
                             <button
                                 onClick={handleLogShift}
                                 disabled={!allAreasFilled}
-                                style={{
-                                    padding: '10px 20px',
-                                    fontSize: '1rem',
-                                    fontWeight: 'bold',
-                                    color: 'white',
-                                    backgroundColor: allAreasFilled ? '#2e7d32' : '#9e9e9e',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    cursor: allAreasFilled ? 'pointer' : 'not-allowed',
-                                    transition: 'background-color 0.2s ease'
-                                }}
+                                className="btn-log"
                             >
                                 Log Shift & Export
                             </button>
-                            <span style={{ fontSize: '0.8rem', marginTop: '5px', color: allAreasFilled ? '#2e7d32' : '#d32f2f' }}>
+                            <span className={`status-message ${allAreasFilled ? 'ready' : 'pending'}`}>
                                 {allAreasFilled 
                                     ? "✅ Ready: All stations fully manned." 
                                     : `⚠️ Coverage: ${filledZonesCount}/${totalRequiredZones} areas assigned.`
@@ -161,36 +112,7 @@ const Scheduler = () => {
                     </div>
                 </div>
 
-
-                <h2>Facility Shift Scheduler</h2>
-
-                    {/*<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                        <button
-                            onClick={handleLogShift}
-                            disabled={!allAreasFilled}
-                            style={{
-                                padding: '10px 20px',
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                                color: 'white',
-                                backgroundColor: allAreasFilled ? '#2e7d32' : '#9e9e9e',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: allAreasFilled ? 'pointer' : 'not-allowed',
-                                transition: 'background-color 0.2s ease'
-                            }}
-                        >
-                            Log Shift & Export
-                        </button>
-                        <span style={{ fontSize: '0.8rem', marginTop: '5px', color: allAreasFilled ? '#2e7d32' : '#d32f2f' }}>
-                            {allAreasFilled 
-                                ? "✅ Ready: All stations fully manned." 
-                                : `⚠️ Coverage: ${filledZonesCount}/${totalRequiredZones} areas assigned.`
-                            }
-                        </span>
-                    </div> */}
-
-
+                {/* ─── AVAILABLE UNASSIGNED BENCH ─── */}
                 <div className={`unassigned-sidebar ${isHovered ? 'drag-hover' : ''}`}
                     onDragOver={(e) => e.preventDefault()}
                     onDragEnter={() => setIsHovered(true)}
@@ -202,23 +124,26 @@ const Scheduler = () => {
                         {unassignedWorkers.map(emp => (
                             <EmployeeBadge key={emp.id} employee={emp} />
                         ))}
-                        {unassignedWorkers.length === 0 && <span style={{color: '#888', fontSize: '0.9rem'}}>All crew members deployed.</span>}
+                        {unassignedWorkers.length === 0 && (
+                            <span className="bench-empty-text">All crew members deployed.</span>
+                        )}
                     </div>
                 </div>
                 
+                {/* ─── FACILITY GRID MAP ─── */}
                 <div className="scheduler-grid">
-                    {facilityData.map(area=> (
+                    {facilityData.map(area => (
                         <FacilityArea
-                        key={area.id}
-                        areaId={area.id}
-                        title={area.title}
-                        zones={area.zones} 
+                            key={area.id}
+                            areaId={area.id}
+                            title={area.title}
+                            zones={area.zones} 
                         />
                     ))}
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Scheduler;
