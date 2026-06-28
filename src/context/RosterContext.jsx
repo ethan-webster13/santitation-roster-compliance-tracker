@@ -87,8 +87,6 @@ export const RosterProvider = ({ children }) =>{
       return updatedAssignments; // Update the global assignments state object
     });
   };
-
-
     
   const totalEmployees = useMemo(()=> {
     return liveRoster.length;
@@ -106,6 +104,14 @@ export const RosterProvider = ({ children }) =>{
     unassignEmployee(id);
   };
 
+  const updateEmployee = ( id, updatedData ) => {
+    setLiveRoster(prevRoster =>
+      prevRoster.map( emp =>
+        emp.id === id ? { ...emp, ...updatedData } : emp
+      )
+    );
+  };
+
   const toggleAbsence = (empId) => {
     const targetEmployee = liveRoster.find(emp => emp.id ===empId);
     if (targetEmployee && !targetEmployee.isAbsent) {
@@ -117,8 +123,7 @@ export const RosterProvider = ({ children }) =>{
       )
     )
   };
-          
-
+  
 
   //Facility Context Data
   const [facilityData, setFacilityData] = useState(initialLayoutData);
@@ -142,6 +147,7 @@ export const RosterProvider = ({ children }) =>{
       liveRoster,
       addEmployee,
       deleteEmployee,
+      updateEmployee,
       totalRequiredZones,
       totalEmployees,
       activeEmployees,

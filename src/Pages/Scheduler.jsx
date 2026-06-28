@@ -4,6 +4,7 @@ import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import { useRoster } from "../context/RosterContext";
 import initialLayoutData from "../data/layoutData";
+import EditEmployeeModal from "../Components/scheduler/EditEmployeeModal";
 import '../Components/scheduler/scheduler.css';
 
 const Scheduler = () => {
@@ -111,6 +112,8 @@ const Scheduler = () => {
                         </div>
                     </div>
                 </div>
+
+                
 
                 {/* ─── AVAILABLE UNASSIGNED BENCH ─── */}
                 <div className={`unassigned-sidebar ${isHovered ? 'drag-hover' : ''}`}

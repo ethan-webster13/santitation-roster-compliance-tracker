@@ -3,19 +3,26 @@ import NewEmp from "./NewEmp";
 import { useAuth, useRole } from "../Components/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useRoster } from "../context/RosterContext";
+import EditEmployeeModal from "../Components/scheduler/EditEmployeeModal";
+import { useState } from "react";
 
 const Roster = () => {
   const { user } = useAuth();
   const { isManager, isSupervisor } = useRole();
   const navigate = useNavigate();
 
-  const { liveRoster, deleteEmployee, toggleAbsence } = useRoster();
+  const { liveRoster, deleteEmployee, toggleAbsence, updateEmployee } = useRoster();
+  const [editId, setEditId] = useState(null)
 
 
   return (
     <>
       <NavBar />
-
+      {editId && 
+      <EditEmployeeModal 
+      employeeId={editId} 
+      onClose={()=>setEditId(null)}
+      />}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3>Roster Page</h3>
         {/* Only managers see this button — supervisors and read-only do not */}
@@ -59,7 +66,7 @@ const Roster = () => {
                     />
                     <span style={{marginRight: '2vw'}}>Mark Absent</span>
                   </label>
-                  <button onClick={() => console.log("Edit", worker.id)}>Edit</button>
+                  <button onClick={()=>setEditId(worker.id)}>Edit</button>
                   {isManager && (
                     <button onClick={()=>deleteEmployee(worker.id)}>
                       Remove
