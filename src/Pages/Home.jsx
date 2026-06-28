@@ -1,7 +1,6 @@
 import NavBar from '../Components/NavBar';
 import ShortcutCard from '../Components/ShortcutCard';
 import { About } from '../Components/About';
-import '../App.css'
 import MetricsBar from '../Components/MetricsBar';
 import { useState, useEffect, createContext, useContext } from 'react';
 

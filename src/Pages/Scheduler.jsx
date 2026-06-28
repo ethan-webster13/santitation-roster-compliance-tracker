@@ -5,7 +5,7 @@ import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import { useRoster } from "../context/RosterContext";
 import initialLayoutData from "../data/layoutData";
 import EditEmployeeModal from "../Components/EditEmployeeModal";
-import '../Components/scheduler/scheduler.css';
+import '../css/scheduler.css';
 
 const Scheduler = () => {
     const [facilityData, setFacilityData] = useState(initialLayoutData);

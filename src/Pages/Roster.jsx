@@ -38,8 +38,8 @@ const Roster = () => {
       </div>
 
       {/* Show who is viewing for debugging purposes*/}
-      <p style={{ fontSize: "0.85rem", color: "#666" }}>
-        Viewing as: {user?.username} ({user?.role})
+      <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+         Viewing as: {user?.username} ({user?.role})
       </p>
 
       <table>

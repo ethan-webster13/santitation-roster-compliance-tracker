@@ -12,18 +12,18 @@
 
 /* --- Facility Quadrant Cards --- */
 .facility-area {
-  border: 2px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .facility-area-title {
   margin-top: 0;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 8px;
-  color: #222;
+  color: var(--text-primary);
 }
 
 .shift-zone-grid {
@@ -35,8 +35,8 @@
 
 /* --- Sub-Zone Workstations --- */
 .shift-zone {
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 12px;
   min-height: 110px;
@@ -48,7 +48,7 @@
 .shift-zone-title {
   margin: 0 0 10px 0;
   font-size: 0.95rem;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -96,10 +96,30 @@
   border-color: rgba(51, 105, 30, 0.2);
 }
 
+/* Dark Mode Badge Overrides */
+body.dark-theme .role-supervisor {
+  background-color: rgba(171, 71, 188, 0.15);
+  color: #ce93d8;
+  border-color: rgba(206, 147, 216, 0.3);
+}
+
+body.dark-theme .role-lead {
+  background-color: rgba(66, 165, 245, 0.15);
+  color: #90caf9;
+  border-color: rgba(144, 202, 249, 0.3);
+}
+
+body.dark-theme .role-laborer {
+  background-color: rgba(102, 187, 106, 0.15);
+  color: #a5d6a7;
+  border-color: rgba(165, 214, 167, 0.3);
+}
+
+
 /* --- Drag and Drop Usability Enhancements --- */
 .unassigned-sidebar {
-  background-color: #f1f3f5;
-  border: 2px dashed #ced4da;
+  background-color: var(--bg-surface);
+  border: 2px dashed var(--border-color);
   border-radius: 8px;
   padding: 15px;
   margin-bottom: 20px;
@@ -122,17 +142,17 @@
 .employee-badge.draggable:active {
   cursor: grabbing;
   transform: scale(0.96);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-md);
 }
 
 .shift-zone.drag-hover {
-  background-color: #fffde7 !important; /* Soft yellow highlight on hover */
+  background-color: rgba(253, 216, 53, 0.15) !important; /* Adapted to be translucent for both themes */
   border-color: #fbc02d !important;
 }
 
 .unassigned-bench.drag-hover {
-  background-color: #e8f5e9;
-  border-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.1) !important;
+  border-color: #4caf50 !important;
 }
 
 /* ==========================================================================
@@ -144,7 +164,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
-    border-bottom: 2px solid #f0f0f0;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 15px;
 }
 
@@ -170,9 +190,9 @@
 
 /* Global button state handling via browser engine overrides */
 .toolbar-container button:disabled {
-    background-color: #e0e0e0 !important;
-    color: #a0a0a0 !important;
-    border: none !important;
+    background-color: var(--bg-surface) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color) !important;
     cursor: not-allowed;
     box-shadow: none;
 }
@@ -180,13 +200,17 @@
 /* 🗑️ Clear Board Button Settings */
 .btn-clear {
     padding: 10px 16px !important;
-    background-color: #fff1f0;
+    background-color: rgba(207, 19, 34, 0.1);
     color: #cf1322;
-    border: 1px solid #ffa39e !important;
+    border: 1px solid rgba(207, 19, 34, 0.3) !important;
+}
+
+body.dark-theme .btn-clear {
+    color: #ffccc7;
 }
 
 .btn-clear:hover:not(:disabled) {
-    background-color: #ffccc7;
+    background-color: rgba(207, 19, 34, 0.2);
 }
 
 /* ⚡ Auto-Assign Button Settings */
@@ -197,7 +221,7 @@
 
 .btn-auto:hover:not(:disabled) {
     background-color: #4b00b4;
-    box-shadow: 0 2px 8px rgba(98, 0, 238, 0.25);
+    box-shadow: var(--shadow-sm);
 }
 
 /* 💾 Log Shift Layout Wrapper */
@@ -214,7 +238,7 @@
 
 .btn-log:hover:not(:disabled) {
     background-color: #1b5e20;
-    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+    box-shadow: var(--shadow-sm);
 }
 
 /* Status Messaging Context Signals */
@@ -225,14 +249,79 @@
 }
 
 .status-message.ready {
-    color: #2e7d32;
+    color: #4caf50;
 }
 
 .status-message.pending {
-    color: #d32f2f;
+    color: #ef5350;
 }
 
 .bench-empty-text {
-    color: #888;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
+
+/* ==========================================================================
+   Edit Employee Modal - Professional UI
+   ========================================================================== */
+
+/* Modal Backdrop */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.6); 
+    backdrop-filter: blur(4px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Modal Container */
+.modal-card {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    padding: 32px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow-md);
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Typography */
+.modal-card h3 {
+    margin: 0 0 8px 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.modal-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+}
+
+/* Form Layout */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* Uniform Inputs and Selects */
+.form-group input,

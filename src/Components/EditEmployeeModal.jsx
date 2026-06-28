@@ -6,7 +6,6 @@ const EditEmployeeModal = ({ employeeId, onClose }) => {
     const {liveRoster, updateEmployee } = useRoster();
 
     const employee = liveRoster.find(emp => emp.id === employeeId);
-    const [isDarkMode, setIsDarkMode] = useState(true)
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -39,12 +38,9 @@ const EditEmployeeModal = ({ employeeId, onClose }) => {
 
     return (
         <div className="modal-overlay">
-            <div className={`modal-card ${isDarkMode ? 'dark-theme' : ''}`}>
+            <div className="modal-card">
                 <h3>Edit Employee Profile</h3>
-                <button 
-                type="button"
-                className="btn-theme-toggle"
-                onClick={()=>setIsDarkMode(!isDarkMode)}>{isDarkMode ? '☀️ Light' : '🌙 Dark'}</button>
+            
                 <p className="modal-subtitle">Updating information for #{employeeId}</p>
 
                 <form onSubmit={handleSubmit}>

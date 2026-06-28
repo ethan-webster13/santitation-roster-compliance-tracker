@@ -1,6 +1,5 @@
 import { useRoster } from '../context/RosterContext'
 import initialLayoutData from '../data/layoutData'
-import '../App.css'
 
 //Metrics to track KPI data surrounding, active employees, total employees, zones, unassigned zones, completedLogs, totalLogsRequired, and compliance status (i.e 'Compliant' or 'Action Required')
 const MetricsBar = () => {

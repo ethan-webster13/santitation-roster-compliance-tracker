@@ -1,6 +1,6 @@
-
-
-
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
 .navBar {
   display: flex;
   flex-direction: row;
@@ -8,6 +8,9 @@
   gap: 10px;
 }
 
+/* ==========================================================================
+   KPI / Metric Dashboard Cards
+   ========================================================================== */
 .metrics-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -16,24 +19,23 @@
   width: 100%;
 }
 
-/* Base style for individual KPI cards */
 .metric-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  /* Swapped hex codes for CSS variables */
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .metric-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
-/* Large emoji/icon treatment */
 .metric-icon {
   font-size: 2rem;
   margin-right: 15px;
@@ -41,7 +43,7 @@
 
 .metric-data h3 {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-secondary);
   text-transform: uppercase;
   margin: 0 0 5px 0;
   letter-spacing: 0.5px;
@@ -50,30 +52,42 @@
 .metric-value {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .metric-sub {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #64748b;
+  color: var(--text-secondary);
 }
 
-/* Conditional Alert States */
+/* --- Conditional Alert States --- */
 .status-good {
-  border-left: 5px solid #10b981; /* Balanced Operational Green */
+  border-left: 5px solid #10b981; 
 }
 
 .status-alert {
-  border-left: 5px solid #ef4444; /* High-Visibility Emergency Red */
-  background-color: #fef2f2; /* Subtle background tint to catch focus */
+  border-left: 5px solid #ef4444; 
+  background-color: #fef2f2; 
 }
 
 .status-alert .metric-value {
   color: #b91c1c;
 }
 
+/* Dark Mode Overrides for Alerts */
+body.dark-theme .status-alert {
+  background-color: rgba(239, 68, 68, 0.15); /* Translucent instead of solid tint */
+}
+
+body.dark-theme .status-alert .metric-value {
+  color: #fca5a5; /* Lighter red so it remains readable on dark backgrounds */
+}
+
+/* ==========================================================================
+   Vite Default Layout Elements (Updated to use new variables)
+   ========================================================================== */
 #center {
   display: flex;
   flex-direction: column;
@@ -90,7 +104,7 @@
 
 #next-steps {
   display: flex;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-color); /* Updated */
   text-align: left;
 
   & > div {
@@ -114,11 +128,11 @@
 }
 
 #docs {
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--border-color); /* Updated */
 
   @media (max-width: 1024px) {
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-color); /* Updated */
   }
 }
 
@@ -134,10 +148,10 @@
   }
 
   a {
-    color: var(--text-h);
+    color: var(--text-primary); /* Updated */
     font-size: 16px;
     border-radius: 6px;
-    background: var(--social-bg);
+    background: var(--code-bg); /* Updated */
     display: flex;
     padding: 6px 12px;
     align-items: center;
@@ -146,7 +160,7 @@
     transition: box-shadow 0.3s;
 
     &:hover {
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md); /* Updated */
     }
     .button-icon {
       height: 18px;
@@ -173,7 +187,7 @@
 
 #spacer {
   height: 88px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-color); /* Updated */
   @media (max-width: 1024px) {
     height: 48px;
   }
@@ -193,10 +207,10 @@
 
   &::before {
     left: 0;
-    border-left-color: var(--border);
+    border-left-color: var(--border-color); /* Updated */
   }
   &::after {
     right: 0;
-    border-right-color: var(--border);
+    border-right-color: var(--border-color); /* Updated */
   }
 }

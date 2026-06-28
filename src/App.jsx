@@ -6,7 +6,7 @@ import { Login } from './Pages/Login'
 import Roster from './Pages/Roster'
 import Compliance from './Pages/Compliance'
 import NewEmp from './Pages/NewEmp'
-import './App.css'
+import './css/App.css'
 import AdminPage from './Pages/AdminPage'
 
 
