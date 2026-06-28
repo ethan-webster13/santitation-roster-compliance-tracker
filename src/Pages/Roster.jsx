@@ -1,9 +1,10 @@
 import NavBar from "../Components/NavBar";
 import NewEmp from "./NewEmp";
+import '../css/roster.css'
 import { useAuth, useRole } from "../Components/AuthContext";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useRoster } from "../context/RosterContext";
-import EditEmployeeModal from "../Components/scheduler/EditEmployeeModal";
+import EditEmployeeModal from "../Components/EditEmployeeModal";
 import { useState } from "react";
 
 const Roster = () => {
@@ -18,11 +19,14 @@ const Roster = () => {
   return (
     <>
       <NavBar />
+
       {editId && 
       <EditEmployeeModal 
       employeeId={editId} 
       onClose={()=>setEditId(null)}
       />}
+
+
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <h3>Roster Page</h3>
         {/* Only managers see this button — supervisors and read-only do not */}

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useRoster } from "../../context/RosterContext";
-import initialLayoutData from "../../data/layoutData";
+import { useRoster } from "../context/RosterContext";
+import initialLayoutData from "../data/layoutData";
 
 const EditEmployeeModal = ({ employeeId, onClose }) => {
     const {liveRoster, updateEmployee } = useRoster();
 
     const employee = liveRoster.find(emp => emp.id === employeeId);
+    const [isDarkMode, setIsDarkMode] = useState(true)
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -38,8 +39,12 @@ const EditEmployeeModal = ({ employeeId, onClose }) => {
 
     return (
         <div className="modal-overlay">
-            <div className="modal-card">
+            <div className={`modal-card ${isDarkMode ? 'dark-theme' : ''}`}>
                 <h3>Edit Employee Profile</h3>
+                <button 
+                type="button"
+                className="btn-theme-toggle"
+                onClick={()=>setIsDarkMode(!isDarkMode)}>{isDarkMode ? '☀️ Light' : '🌙 Dark'}</button>
                 <p className="modal-subtitle">Updating information for #{employeeId}</p>
 
                 <form onSubmit={handleSubmit}>
@@ -65,12 +70,20 @@ const EditEmployeeModal = ({ employeeId, onClose }) => {
                     
                     <div className="form-group">
                         <label>Role / Title</label>
-                        <input 
+                        {/*<input 
                             type="text"
                             value={role}
                             onChange={(e)=>setRole(e.target.value)}
                             placeholder="e.g. Sanitation Lead, Laborer"
-                        />
+                        />*/
+                        <select className="form-select"
+                        value={role}
+                        onChange={(e)=>setRole(e.target.value)}>
+                            <option value="new-hire">--New Hire--</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="sanitation lead">Sanitation Lead</option>
+                            <option value="laborer">Laborer</option>
+                        </select>}
                     </div>
 
                     <div className="form-group">

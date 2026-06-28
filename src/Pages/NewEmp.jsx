@@ -11,7 +11,7 @@ const NewEmp = ( {onEmpAdd} ) => {
         firstName: '',
         lastName: '',
         phone: '',
-        role: 'new hire',
+        role: 'new-hire',
         zone: 'unassigned',
         hWorked: 0
     });

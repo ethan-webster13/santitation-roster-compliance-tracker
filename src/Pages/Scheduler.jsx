@@ -4,7 +4,7 @@ import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import { useRoster } from "../context/RosterContext";
 import initialLayoutData from "../data/layoutData";
-import EditEmployeeModal from "../Components/scheduler/EditEmployeeModal";
+import EditEmployeeModal from "../Components/EditEmployeeModal";
 import '../Components/scheduler/scheduler.css';
 
 const Scheduler = () => {
