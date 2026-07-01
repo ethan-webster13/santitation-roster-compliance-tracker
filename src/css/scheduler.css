@@ -405,3 +405,115 @@ body.dark-theme .btn-clear {
     color: var(--text-primary);
     transition: all 0.2s;
 }
+
+.modal-card-lg {
+    max-width: 600px; /* Safe, responsive boundary instead of vmax */
+    width: 90%;
+}
+
+.step-header {
+    color: var(--accent);
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.alert-header {
+    color: #ef4444;
+    border-bottom-color: rgba(239, 68, 68, 0.3);
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+/* --- Signature Pad Formatting --- */
+.sig-pad-wrapper {
+    border: 2px dashed var(--border-color);
+    border-radius: 6px;
+    background-color: #ffffff; /* Always white so black/red ink is visible */
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.sig-pad {
+    width: 100%;
+    height: 150px;
+    touch-action: none; /* Crucial for mobile drawing */
+    cursor: crosshair;
+}
+
+/* --- Clear Pad Button (Signature Pad) --- */
+.btn-clear-pad {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    /* Uses the same red as your Clear Board button to signal a 'delete' action */
+    color: #ef4444; 
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-bottom: 16px;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+}
+
+/* Transitions to the sharp, dark text color on hover */
+.btn-clear-pad:hover {
+    color: var(--text-primary, #111827); 
+}
+
+/* Optional: Keeps it vivid but legible if you implement a dark theme */
+body.dark-theme .btn-clear-pad {
+    color: #f87171; /* A slightly lighter red so it pops against dark backgrounds */
+}
+
+body.dark-theme .btn-clear-pad:hover {
+    color: var(--text-primary, #f3f4f6);
+}
+
+/* --- LOTO Specific Styling --- */
+.loto-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.loto-checkbox-wrapper input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.loto-checkbox-wrapper span {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #b91c1c;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+/* Dark Theme Adjustments for the Pad */
+body.dark-theme .sig-pad-wrapper {
+    border-color: #475569;
+    /* Keeping background white internally for ink contrast, 
+       or use a very light gray if #fff is too harsh at night */
+    background-color: #f8fafc; 
+}

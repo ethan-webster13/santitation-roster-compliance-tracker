@@ -5,6 +5,7 @@ import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import { useRoster } from "../context/RosterContext";
 import initialLayoutData from "../data/layoutData";
 import EditEmployeeModal from "../Components/EditEmployeeModal";
+import ZoneGatekeeperModal from "../Components/ZoneGatekeeperModal";
 import '../css/scheduler.css';
 
 const Scheduler = () => {
@@ -20,10 +21,22 @@ const Scheduler = () => {
     } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
 
+    const [activeAreaModal, setActiveAreaModal] = useState(null); //Tracks which area's modal is open
+    const [complianceLogs, setComplianceLogs] = useState({}); //Stores { areaId: compliancePackage}
+
     // Derived Utility States
     const allAreasFilled = filledZonesCount === totalRequiredZones;
     const hasAssignments = Object.keys(assignments).length > 0;
     const unassignedWorkers = liveRoster.filter(emp => !assignments[emp.id] && !emp.isAbsent);
+
+    //Area Modal Submission Function
+    const handleActivationComplete = (areaId, compliancePackage) => {
+        setComplianceLogs(prev => ({
+            ...prev,
+            [areaId]: compliancePackage
+        }));
+        setActiveAreaModal(null)
+    }
 
     const handleLogShift = () => {
         if (!allAreasFilled) return;
@@ -35,6 +48,15 @@ const Scheduler = () => {
 
         facilityData.forEach(area => {
             logText += `Area: ${area.title}\n`;
+            
+            if (complianceLogs[area.id]) {
+                logText += `  [✓] Floor Handover Verified: ${new Date(complianceLogs[area.id].handoff.timestamp).toLocaleTimeString()}\n`;
+                logText += `  [✓] Zero Energy, Supervisor Control LOTO: Active/Valid.  Applied: ${new Date(complianceLogs[area.id].loto.timestamp).toLocaleTimeString()}\n`;
+            } else {
+                logtext += ` [⚠️] AREA NOT SECURED BY LOTO\n`;
+            }
+
+
             area.zones.forEach(zoneName => {
                 const assignedEmpId = Object.keys(assignments).find(empId =>
                     assignments[empId].areaId === area.id && assignments[empId].zoneName === zoneName
@@ -135,14 +157,33 @@ const Scheduler = () => {
                 
                 {/* ─── FACILITY GRID MAP ─── */}
                 <div className="scheduler-grid">
-                    {facilityData.map(area => (
-                        <FacilityArea
-                            key={area.id}
-                            areaId={area.id}
-                            title={area.title}
-                            zones={area.zones} 
+                    {facilityData.map(area => {
+                        const isAreaFullyAssigned = area.zones.every(zoneName =>
+                            Object.values(assignments).some( a => a.areaId === area.id && a.zoneName === zoneName) 
+                        );
+
+                        return (
+                            <FacilityArea 
+                                key={area.id}
+                                areaId={area.id}
+                                title={area.title}
+                                zones={area.zones}
+                                isFullyAssigned={isAreaFullyAssigned}
+                                complianceLog={complianceLogs[area.id]}
+                                onInitiateHandoff={()=>setActiveAreaModal(area)}
+                            />
+                        );
+                    })}
+
+                    {activeAreaModal &&  (
+                        <ZoneGatekeeperModal
+                            zoneName={activeAreaModal.title}
+                            onClose={()=> setActiveAreaModal(null)}
+                            onComplete={(zoneName, compliancePackage) => 
+                                handleActivationComplete(activeAreaModal.id, compliancePackage)
+                            }
                         />
-                    ))}
+                    )}
                 </div>
             </div>
         </>
