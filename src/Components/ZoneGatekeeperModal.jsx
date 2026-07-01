@@ -2,20 +2,20 @@ import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import '../css/scheduler.css'
 
-const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete }) => {
+const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete, onSaveAndClose, initialData }) => {
     const floorSigRef = useRef(null);
     const lotoSigRef = useRef(null);
 
-    const [preCleanStep, setPreCleanStep] = useState(1);
+    const [preCleanStep, setPreCleanStep] = useState(initialData?.preCleanStep ?? 1);
 
-    const [handoffData, setHandoffData] = useState({
+    const [handoffData, setHandoffData] = useState(initialData?.handoffData ?? {
         plantPersonnelName: '',
         inheritedDamage: '',
         signature: null,
         timestamp: null
     });
 
-    const [lotoData, setLotoData] = useState({
+    const [lotoData, setLotoData] = useState(initialData?.lotoData ?? {
         supervisorId: '',
         energyIsolated: false,
         signature: null,
@@ -54,6 +54,10 @@ const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete }) => {
         onComplete(zoneName, {handoff: handoffData, loto: completedLoto});
     };
 
+    const handleSaveAndClose = () => {
+        onSaveAndClose(zoneName, { preCleanStep, handoffData, lotoData});
+    }
+
     return (
         <div className="modal-overlay">
             <div className="modal-card modal-card-lg">
@@ -91,7 +95,8 @@ const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete }) => {
                         </div>
                         <button
                             type="button"
-                            className="btn-clear-pad" 
+                            className="btn-clear-pad"
+                            style={{ color: '#ef4444', opacity: 1, visibility: 'visible', textDecoration: 'underline' }}
                             onClick={()=>floorSigRef.current.clear()}>
                             Clear Pad
                         </button>
@@ -145,6 +150,9 @@ const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete }) => {
                         </button>
 
                         <div className="modal-actions">
+                            <button type="button" className="btn-cancel" onClick={handleSaveAndClose}>
+                                Save & Close
+                            </button>
                             <button type="submit" className="btn-save" style={{ backgroundColor: "#ef4444" }}>
                                 Authorize & Activate Line
                             </button>

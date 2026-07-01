@@ -23,6 +23,8 @@ const Scheduler = () => {
 
     const [activeAreaModal, setActiveAreaModal] = useState(null); //Tracks which area's modal is open
     const [complianceLogs, setComplianceLogs] = useState({}); //Stores { areaId: compliancePackage}
+    const [zoneDrafts, setZoneDrafts] = useState({})
+    
 
     // Derived Utility States
     const allAreasFilled = filledZonesCount === totalRequiredZones;
@@ -34,6 +36,19 @@ const Scheduler = () => {
         setComplianceLogs(prev => ({
             ...prev,
             [areaId]: compliancePackage
+        }));
+        setZoneDrafts(prev => {
+            const next = { ...prev }
+            delete next[areaId];
+            return next;
+        })
+        setActiveAreaModal(null)
+    };
+
+    const handleSaveAndCloseDraft = (areaID, draftData) => {
+        setZoneDrafts(prev => ({
+            ...prev,
+            [areaID]: draftData
         }));
         setActiveAreaModal(null)
     }
@@ -53,7 +68,7 @@ const Scheduler = () => {
                 logText += `  [✓] Floor Handover Verified: ${new Date(complianceLogs[area.id].handoff.timestamp).toLocaleTimeString()}\n`;
                 logText += `  [✓] Zero Energy, Supervisor Control LOTO: Active/Valid.  Applied: ${new Date(complianceLogs[area.id].loto.timestamp).toLocaleTimeString()}\n`;
             } else {
-                logtext += ` [⚠️] AREA NOT SECURED BY LOTO\n`;
+                logText += ` [⚠️] AREA NOT SECURED BY LOTO\n`;
             }
 
 
@@ -170,6 +185,7 @@ const Scheduler = () => {
                                 zones={area.zones}
                                 isFullyAssigned={isAreaFullyAssigned}
                                 complianceLog={complianceLogs[area.id]}
+                                hasDraft={!!zoneDrafts[area.id]}
                                 onInitiateHandoff={()=>setActiveAreaModal(area)}
                             />
                         );
@@ -178,9 +194,13 @@ const Scheduler = () => {
                     {activeAreaModal &&  (
                         <ZoneGatekeeperModal
                             zoneName={activeAreaModal.title}
+                            initialData={zoneDrafts[activeAreaModal.id]}
                             onClose={()=> setActiveAreaModal(null)}
                             onComplete={(zoneName, compliancePackage) => 
                                 handleActivationComplete(activeAreaModal.id, compliancePackage)
+                            }
+                            onSaveAndClose={(zoneName, draftData) =>
+                                handleSaveAndCloseDraft(activeAreaModal.id, draftData)
                             }
                         />
                     )}

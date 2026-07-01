@@ -6,7 +6,8 @@ const FacilityArea = ({
     title, 
     zones, 
     isFullyAssigned, 
-    complianceLog, 
+    complianceLog,
+    hasDraft, 
     onInitiateHandoff 
 }) => {
 
@@ -47,7 +48,7 @@ const FacilityArea = ({
                             transition: "background-color 0.2s ease"
                         }}
                     >
-                        {isFullyAssigned ? "⚡ Begin Handoff Sequence" : "🔒 Assign Full Crew to Unlock"}
+                        {isFullyAssigned ? (hasDraft ? "🔄 Resume Handoff Sequence"  : "⚡ Begin Handoff Sequence") : "🔒 Assign Full Crew to Unlock"}
                     </button>
                 ) : (
                     <div
