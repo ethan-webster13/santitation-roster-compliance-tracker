@@ -452,7 +452,6 @@ body.dark-theme .btn-clear {
     align-self: flex-end;
     background: none;
     border: none;
-    /* Uses the same red as your Clear Board button to signal a 'delete' action */
     color: #ef4444; 
     font-size: 0.85rem;
     font-weight: 600;
@@ -461,6 +460,8 @@ body.dark-theme .btn-clear {
     margin-bottom: 16px;
     padding: 4px 8px;
     transition: color 0.2s ease;
+    opacity: 1 !important; 
+    visibility: visible !important;
 }
 
 /* Transitions to the sharp, dark text color on hover */

@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
+import '../css/scheduler.css'
 
 const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete }) => {
     const floorSigRef = useRef(null);
@@ -139,7 +140,7 @@ const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete }) => {
                             canvasProps={{className: 'sig-pad'}}
                         />
                     </div>
-                        <button type="button"  className="btn-theme-toggle" style={{ alignSelf: "flex-end", marginBottom: "16px" }} onClick={()=> lotoSigRef.current.clear()}>
+                        <button type="button"  className="btn-clear-pad" onClick={()=> lotoSigRef.current.clear()}>
                             Clear Pad
                         </button>
 
