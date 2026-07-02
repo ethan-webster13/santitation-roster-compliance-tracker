@@ -16,21 +16,18 @@ const isInRange = (chemicalName, ppmValue) => {
 };
 
 const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose }) => {
-    const { updateOperationalLog } = useRoster();
+    const { updateOperationalLog, complianceLogs } = useRoster();
 
-    const [turnover, setTurnover] = useState(initialData?.turnover ?? {
-        actualTurnoverTime: ''
-    });
+    const handoffTimestamp = complianceLogs[areaId]?.handoff?.timestamp ?? null;
+    const turnover = { actualTurnoverTime: handoffTimestamp };
+
 
     const [titration, setTitration] = useState(initialData?.titration ?? {
         chemicalName: '',
         concentrationPPM: ''
     });
 
-    const [water, setWater] = useState(initialData?.water ?? {
-        pressurePSI: '',
-        temperatureF: ''
-    });
+   
 
     const [qaWalk, setQaWalk] = useState(initialData?.qaWalk ?? {
         inspectorId: '',
@@ -73,7 +70,6 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
         updateOperationalLog(areaId, {
             turnover,
             titration,
-            water,
             qaWalk,
             usdaWalk,
             finalSanitizer,
@@ -86,7 +82,6 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
         updateOperationalLog(areaId, {
             turnover,
             titration,
-            water,
             qaWalk,
             usdaWalk,
             finalSanitizer,
@@ -105,12 +100,13 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
 
                     {/* ─── TURNOVER TIME ─── */}
                     <h4 className="step-header">Turnover Time</h4>
-                    <label>Actual Turnover Time:</label>
+                    <label>Actual Turnover Time (auto-filled from plant handoffsignoff):</label>
                     <input
-                        type="datetime-local"
-                        required
-                        value={turnover.actualTurnoverTime}
-                        onChange={(e) => setTurnover({ ...turnover, actualTurnoverTime: e.target.value })}
+                        type="readOnly"
+                        disabled
+                        value={handoffTimestamp ? new Date(handoffTimestamp.toLocaleString()) : '⚠️ No handoff timestamp found'}
+                        style={{cursor: 'not-allowed'}}
+                        
                     />
 
                     {/* ─── TITRATION ─── */}
@@ -141,28 +137,7 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
                         </div>
                     </div>
 
-                    {/* ─── WATER METRICS ─── */}
-                    <h4 className="step-header">Water Metrics</h4>
-                    <div className="input-grid">
-                        <div>
-                            <label>Water Pressure (PSI):</label>
-                            <input
-                                type="number"
-                                required
-                                value={water.pressurePSI}
-                                onChange={(e) => setWater({ ...water, pressurePSI: e.target.value })}
-                            />
-                        </div>
-                        <div>
-                            <label>Water Temperature (°F):</label>
-                            <input
-                                type="number"
-                                required
-                                value={water.temperatureF}
-                                onChange={(e) => setWater({ ...water, temperatureF: e.target.value })}
-                            />
-                        </div>
-                    </div>
+                   
 
                     {/* ─── QA WALK ─── */}
                     <h4 className="step-header">QA Pre-Ops Walk</h4>

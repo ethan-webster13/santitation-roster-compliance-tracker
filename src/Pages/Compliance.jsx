@@ -4,6 +4,7 @@ import { useRoster } from "../context/RosterContext";
 import OperationalComplianceModal from "../Components/OperationalComplianceModal"
 import '../Components/NavBar';
 import '../css/scheduler.css';
+import PlantWaterMetricsPanel from "../Components/PlantWaterMetricsPanel";
 
 
 const Compliance = () => {
@@ -27,7 +28,7 @@ const Compliance = () => {
             <div className="scheduler-header">
                 <h2>Daily Compliance</h2>
             </div>
-
+            <PlantWaterMetricsPanel />
             {securedAreas.length === 0 && (
                 <p style={{ padding: '20px' }}>
                     No areas have completed LOTO handoff yet. Secure an area from the Scheduler page first.

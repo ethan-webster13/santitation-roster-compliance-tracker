@@ -156,6 +156,14 @@ export const RosterProvider = ({ children }) =>{
         }));
       };
 
+      const [plantWaterLog, setPlantWaterLog] = useState([]) // { pressurePSI, Temperature F, recordedAt}
+
+      const addPlantWaterReading = (reading) => {
+        setPlantWaterLog(prev => [
+          ...prev, { ...reading, recordedAt: new Date().toISOString() }
+        ]);
+      };
+
 
 
   return (
@@ -169,6 +177,8 @@ export const RosterProvider = ({ children }) =>{
       assignments,
       complianceLogs,
       operationalLogs,
+      plantWaterLog,
+      addPlantWaterReading,
       recordComplianceLog,
       updateOperationalLog,
       addEmployee,
