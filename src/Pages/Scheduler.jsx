@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import NavBar from "../Components/NavBar";
 import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
@@ -9,20 +10,22 @@ import ZoneGatekeeperModal from "../Components/ZoneGatekeeperModal";
 import '../css/scheduler.css';
 
 const Scheduler = () => {
-    const [facilityData, setFacilityData] = useState(initialLayoutData);
+
     const { 
         liveRoster, 
-        assignments, 
+        assignments,
+        facilityData,
         unassignEmployee, 
         totalRequiredZones, 
         filledZonesCount, 
         autoAssignWorkers, 
-        clearBoard 
+        clearBoard,
+        complianceLogs,
+        recordComplianceLog
     } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
 
     const [activeAreaModal, setActiveAreaModal] = useState(null); //Tracks which area's modal is open
-    const [complianceLogs, setComplianceLogs] = useState({}); //Stores { areaId: compliancePackage}
     const [zoneDrafts, setZoneDrafts] = useState({})
     
 
@@ -33,10 +36,7 @@ const Scheduler = () => {
 
     //Area Modal Submission Function
     const handleActivationComplete = (areaId, compliancePackage) => {
-        setComplianceLogs(prev => ({
-            ...prev,
-            [areaId]: compliancePackage
-        }));
+        recordComplianceLog( areaId, compliancePackage)
         setZoneDrafts(prev => {
             const next = { ...prev }
             delete next[areaId];
@@ -131,6 +131,14 @@ const Scheduler = () => {
                         >
                             ⚡ Auto-Assign Crew
                         </button>
+                        
+                        <Link
+                        to="/compliance"
+                        className="btn-auto"
+                        style={{ textDecoration: "none", display: "inline-flex", textAlign: "center", borderRadius: '4px' }}
+                        >
+                        📋 Daily Compliance
+                        </Link>
 
                         <div className="log-shift-group">
                             <button

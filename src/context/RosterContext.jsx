@@ -9,13 +9,13 @@ export const RosterProvider = ({ children }) =>{
   //Employee Context Data
   
   const [liveRoster, setLiveRoster] = useState(initialEmployees);
+ 
   
   /* --- STATE FOR TRACKING WHERE EMPLOYEES ARE ASSIGNED ---
-  
   Instead of making complex arrays inside of arrays, we use one flat Object.
   The key is the Employee's ID, and the value is their location.
   Example: { "7": { areaId: "packaging", zoneName: "Labeling Lines" } }
-  Why this helps us: A JavaScript object can't have duplicate keys. 
+  Why this? A JavaScript object can't have duplicate keys. 
   This makes it physically impossible for an employee to be assigned to two places at once! */
   const [assignments, setAssignments] = useState({});
   
@@ -40,36 +40,30 @@ export const RosterProvider = ({ children }) =>{
     };
 
   const clearBoard = () => {
-    setAssignments({}); // Resets the coordinate map instantly to empty
+    setAssignments({}); // Resets assignments instantly to empty
   };
 
   const autoAssignWorkers = () => {
     setAssignments(prev => {
-      // 1. Start with a copy of current assignments so we don't overwrite manual placements
       const updatedAssignments = { ...prev };
-
-      // 2. Gather all employees who are PRESENT and NOT YET ASSIGNED
       const availableWorkers = liveRoster.filter(emp => 
         !emp.isAbsent && !updatedAssignments[emp.id]
       );
 
-      // If everyone is already assigned or absent, change nothing
       if (availableWorkers.length === 0) return prev;
 
       let workerIndex = 0;
 
-      // 3. Loop through every area and nested zone in the facility layout blueprint
       for (const area of facilityData) {
         for (const zoneName of area.zones) {
           // If we run out of unassigned workers, stop looping immediately
           if (workerIndex >= availableWorkers.length) break;
 
-          // 4. Check if this specific zone already has someone assigned to it
           const isZoneOccupied = Object.values(updatedAssignments).some(
             assign => assign.areaId === area.id && assign.zoneName === zoneName
           );
 
-          // 5. If the zone is completely empty, slot the next worker in!
+          // If the zone is completely empty, slot the next worker in
           if (!isZoneOccupied) {
             const currentWorker = availableWorkers[workerIndex];
             
@@ -78,7 +72,7 @@ export const RosterProvider = ({ children }) =>{
               zoneName: zoneName
             };
 
-            workerIndex++; // Move to the next worker in our available pool
+            workerIndex++; 
           }
         }
         if (workerIndex >= availableWorkers.length) break;
@@ -141,18 +135,45 @@ export const RosterProvider = ({ children }) =>{
         }, 0);
       }, [facilityData, assignments]);
 
+    // ─── LOTO/handoff compliance logs (moved up from Scheduler so Compliance page can read them too) ───
+      const [complianceLogs, setComplianceLogs] = useState({}); // { [areaId]: { handoff, loto } }
+      
+      const recordComplianceLog = ( areaId, compliancePackage ) => {
+        setComplianceLogs(prev => ({
+          ...prev,
+          [areaId]: compliancePackage
+        }));
+      };
+      
+    // ───  Operational compliance (turnover, titration, water, QA/USDA walks, final sanitizer) ───
+
+      const [operationalLogs, setOperationalLogs] = useState({}); // { [areaID]: operationalData }
+
+      const updateOperationalLog = ( areaId, data ) => {
+        setOperationalLogs(prev => ({
+          ...prev,
+          [areaId]: data
+        }));
+      };
+
+
 
   return (
     <RosterContext.Provider value={{ 
       liveRoster,
-      addEmployee,
-      deleteEmployee,
-      updateEmployee,
       totalRequiredZones,
       totalEmployees,
       activeEmployees,
       filledZonesCount,
+      facilityData,
       assignments,
+      complianceLogs,
+      operationalLogs,
+      recordComplianceLog,
+      updateOperationalLog,
+      addEmployee,
+      deleteEmployee,
+      updateEmployee,
       assignEmployee,
       unassignEmployee,
       toggleAbsence,

@@ -278,9 +278,10 @@ body.dark-theme .btn-clear {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    overflow-y: auto;
+    padding: 40px 0;
 }
 
-/* Modal Container */
 .modal-card {
     background-color: var(--bg-surface);
     color: var(--text-primary);
@@ -290,6 +291,8 @@ body.dark-theme .btn-clear {
     max-width: 480px;
     box-shadow: var(--shadow-md);
     font-family: system-ui, -apple-system, sans-serif;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 /* Typography */
