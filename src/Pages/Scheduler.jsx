@@ -4,7 +4,6 @@ import NavBar from "../Components/NavBar";
 import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import { useRoster } from "../context/RosterContext";
-import initialLayoutData from "../data/layoutData";
 import EditEmployeeModal from "../Components/EditEmployeeModal";
 import ZoneGatekeeperModal from "../Components/ZoneGatekeeperModal";
 import '../css/scheduler.css';
@@ -21,15 +20,14 @@ const Scheduler = () => {
         autoAssignWorkers, 
         clearBoard,
         complianceLogs,
-        recordComplianceLog
+        recordComplianceLog,
+        zoneDrafts,
+        saveZoneDraft, 
+        clearZoneDraft
     } = useRoster();
     const [isHovered, setIsHovered] = useState(false);
-
     const [activeAreaModal, setActiveAreaModal] = useState(null); //Tracks which area's modal is open
-    const [zoneDrafts, setZoneDrafts] = useState({})
-    
 
-    // Derived Utility States
     const allAreasFilled = filledZonesCount === totalRequiredZones;
     const hasAssignments = Object.keys(assignments).length > 0;
     const unassignedWorkers = liveRoster.filter(emp => !assignments[emp.id] && !emp.isAbsent);
@@ -37,11 +35,7 @@ const Scheduler = () => {
     //Area Modal Submission Function
     const handleActivationComplete = (areaId, compliancePackage) => {
         recordComplianceLog( areaId, compliancePackage)
-        setZoneDrafts(prev => {
-            const next = { ...prev }
-            delete next[areaId];
-            return next;
-        })
+        clearZoneDraft(areaId);
         setActiveAreaModal(null)
     };
 

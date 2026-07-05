@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useMemo} from "react";
 import initialEmployees from '../data/employees'
 import initialLayoutData from "../data/layoutData";
+import { isZoneFullyPassing } from '../utils/complianceRules'
 
 const RosterContext = createContext();
 
@@ -144,6 +145,21 @@ export const RosterProvider = ({ children }) =>{
           [areaId]: compliancePackage
         }));
       };
+
+      // -- In Progress LOTO drafts
+      const [zoneDrafts, setZoneDrafts] = useState({});
+      const saveZoneDraft = (areaId, draftData) => {
+        setZoneDrafts(prev => ({
+          ...prev, [areaId]: draftData}));
+      };
+
+      const clearZoneDraft = (areaId) => {
+        setZoneDrafts(prev=> {
+          const next = {...prev};
+          delete next[areaId];
+          return next;
+        });
+      };
       
     // ───  Operational compliance (turnover, titration, water, QA/USDA walks, final sanitizer) ───
 
@@ -164,11 +180,30 @@ export const RosterProvider = ({ children }) =>{
         ]);
       };
 
+      const handoffOnlyCount = useMemo(
+        ()=> Object.keys(zoneDrafts).length, [zoneDrafts]
+      );
+
+      const lotoCompletedCount = useMemo(
+        ()=> Object.keys(complianceLogs).length,
+        [complianceLogs]
+      );
+
+      const inspectionsPassingCount = useMemo(
+        ()=> facilityData.filter(area => isZoneFullyPassing(operationalLogs[area.id])).length,
+        [facilityData, operationalLogs]
+      );
+
+      const releasedToProductionCount = useMemo(
+        ()=> Object.values(operationalLogs).filter( log => log.completedAt).length, 
+        [operationalLogs]
+      )
+
 
 
   return (
     <RosterContext.Provider value={{ 
-      liveRoster,
+        liveRoster,
       totalRequiredZones,
       totalEmployees,
       activeEmployees,
@@ -176,10 +211,17 @@ export const RosterProvider = ({ children }) =>{
       facilityData,
       assignments,
       complianceLogs,
+      zoneDrafts,
       operationalLogs,
       plantWaterLog,
-      addPlantWaterReading,
+      releasedToProductionCount,
+      handoffOnlyCount,
+      lotoCompletedCount,
+      inspectionsPassingCount,
       recordComplianceLog,
+      clearZoneDraft,
+      saveZoneDraft,
+      addPlantWaterReading,
       updateOperationalLog,
       addEmployee,
       deleteEmployee,

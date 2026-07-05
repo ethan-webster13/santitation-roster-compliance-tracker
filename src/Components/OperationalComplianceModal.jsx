@@ -1,19 +1,11 @@
 import { useState } from "react";
 import { useRoster } from "../context/RosterContext";
+import { SANITIZER_RANGES, isInRange, isQaOk, isUsdaOk, isZoneFullyPassing } from "../utils/complianceRules";
 import '../css/scheduler.css';
 
-const CHEMICAL_RANGES = {
-    "Quat Sanitizer": { min: 200, max: 400 },
-    "Chlorine": { min: 50, max: 200 }
-};
 
-const isInRange = (chemicalName, ppmValue) => {
-    const range = CHEMICAL_RANGES[chemicalName];
-    if (!range || ppmValue === '' || ppmValue === null || ppmValue === undefined) return null;
-    const num = Number(ppmValue);
-    if (Number.isNaN(num)) return null;
-    return num >= range.min && num <= range.max;
-};
+
+
 
 const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose }) => {
     const { updateOperationalLog, complianceLogs } = useRoster();
@@ -57,11 +49,9 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
     const finalNeedsRecheck = finalPass === false;
     const finalRecheckPass = isInRange(finalSanitizer.chemicalName, finalSanitizer.recheckPPM);
 
-    const qaBlocked = qaWalk.deficienciesFound && !qaWalk.recheckPassed;
-    const usdaBlocked = usdaWalk.deficienciesFound && !usdaWalk.recheckPassed;
-    const finalBlocked = finalNeedsRecheck && finalRecheckPass !== true;
-
-    const canSubmit = !qaBlocked && !usdaBlocked && !finalBlocked;
+    const qaBlocked = !isQaOk(qaWalk);
+    const usdaBlocked = !isUsdaOk(usdaWalk);
+    const canSubmit = isZoneFullyPassing({ qaWalk, usdaWalk, finalSanitizer });
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -110,7 +100,7 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
                     />
 
                     {/* ─── TITRATION ─── */}
-                    <h4 className="step-header">Chemical Titration</h4>
+                    <h4 className="step-header">Chemical Soap Titration</h4>
                     <div className="input-grid">
                         <div>
                             <label>Chemical:</label>
@@ -120,7 +110,7 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
                                 onChange={(e) => setTitration({ ...titration, chemicalName: e.target.value })}
                             >
                                 <option value="">Select chemical...</option>
-                                {Object.keys(CHEMICAL_RANGES).map(name => (
+                                {Object.keys(SANITIZER_RANGES).map(name => (
                                     <option key={name} value={name}>{name}</option>
                                 ))}
                             </select>
@@ -260,9 +250,9 @@ const OperationalComplianceModal = ({ areaId, areaTitle, initialData, onClose })
                                 })}
                             >
                                 <option value="">Select chemical...</option>
-                                {Object.keys(CHEMICAL_RANGES).map(name => (
+                                {Object.keys(SANITIZER_RANGES).map(name => (
                                     <option key={name} value={name}>
-                                        {name} ({CHEMICAL_RANGES[name].min}–{CHEMICAL_RANGES[name].max} PPM)
+                                        {name} ({SANITIZER_RANGES[name].min}–{SANITIZER_RANGES[name].max} PPM)
                                     </option>
                                 ))}
                             </select>

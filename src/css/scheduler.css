@@ -521,3 +521,84 @@ body.dark-theme .sig-pad-wrapper {
        or use a very light gray if #fff is too harsh at night */
     background-color: #f8fafc; 
 }
+
+.pipeline-stepper {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.pipeline-stage-wrap {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+}
+
+.pipeline-stage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.pipeline-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.pipeline-stage.stage-complete .pipeline-icon {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.pipeline-stage-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.pipeline-stage-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.pipeline-stage-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.pipeline-connector {
+    flex: 1;
+    height: 2px;
+    background-color: var(--border-color);
+    margin: 0 12px;
+    min-width: 20px;
+}
+
+.metric-status {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.status-good {
+    color: #10b981;
+}
+
+.status-alert {
+    color: #ef5350;
+}
