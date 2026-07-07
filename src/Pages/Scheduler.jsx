@@ -25,6 +25,7 @@ const Scheduler = () => {
         saveZoneDraft, 
         clearZoneDraft
     } = useRoster();
+    
     const [isHovered, setIsHovered] = useState(false);
     const [activeAreaModal, setActiveAreaModal] = useState(null); //Tracks which area's modal is open
 

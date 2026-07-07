@@ -5,15 +5,16 @@ import { isZoneFullyPassing } from '../utils/complianceRules'
 
 const RosterContext = createContext();
 
-export const RosterProvider = ({ children }) =>{
-    
+export const RosterProvider = ({ children }) => {  
+    //Anytime a new Usestate is added to context MAKE SURE ITS ADDED TO VALUE in the Roster.provider 
+
   //Employee Context Data
   
   const [liveRoster, setLiveRoster] = useState(initialEmployees);
  
   
   /* --- STATE FOR TRACKING WHERE EMPLOYEES ARE ASSIGNED ---
-  Instead of making complex arrays inside of arrays, we use one flat Object.
+  Instead of making complex arrays inside of arrays, using a flat Object.
   The key is the Employee's ID, and the value is their location.
   Example: { "7": { areaId: "packaging", zoneName: "Labeling Lines" } }
   Why this? A JavaScript object can't have duplicate keys. 
