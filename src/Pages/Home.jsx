@@ -3,6 +3,7 @@ import ShortcutCard from '../Components/ShortcutCard';
 import { About } from '../Components/About';
 import MetricsBar from '../Components/MetricsBar';
 import { useState, useEffect, createContext, useContext } from 'react';
+import ErrorBoundary from '../Components/ErrorBoundary';
 
 const Home = () => {
 
@@ -22,7 +23,9 @@ const Home = () => {
             <div className="grid-container">
                 <About />
                 --KPI indicators--<br />
-                <MetricsBar />
+                <ErrorBoundary label="Current Metrics Bar">
+                  <MetricsBar />
+                </ErrorBoundary>
             </div>
       </section>
 

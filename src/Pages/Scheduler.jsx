@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useRoster } from "../context/RosterContext";
 import NavBar from "../Components/NavBar";
 import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
-import { useRoster } from "../context/RosterContext";
-import EditEmployeeModal from "../Components/EditEmployeeModal";
 import ZoneGatekeeperModal from "../Components/ZoneGatekeeperModal";
 import '../css/scheduler.css';
 
@@ -41,7 +40,7 @@ const Scheduler = () => {
     };
 
     const handleSaveAndCloseDraft = (areaID, draftData) => {
-        setZoneDrafts(prev => ({
+        saveZoneDraft(prev => ({
             ...prev,
             [areaID]: draftData
         }));

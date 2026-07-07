@@ -5,6 +5,7 @@ import OperationalComplianceModal from "../Components/OperationalComplianceModal
 import '../Components/NavBar';
 import '../css/scheduler.css';
 import PlantWaterMetricsPanel from "../Components/PlantWaterMetricsPanel";
+import ErrorBoundary from "../Components/ErrorBoundary";
 
 
 const Compliance = () => {
@@ -28,13 +29,15 @@ const Compliance = () => {
             <div className="scheduler-header">
                 <h2>Daily Compliance</h2>
             </div>
-            <PlantWaterMetricsPanel />
+            <ErrorBoundary label="Plant Water Metrics">
+                <PlantWaterMetricsPanel />
+            </ErrorBoundary>
             {securedAreas.length === 0 && (
                 <p style={{ padding: '20px' }}>
                     No areas have completed LOTO handoff yet. Secure an area from the Scheduler page first.
                 </p>
             )}
-
+        <ErrorBoundary label="Scheduler Zone List">
             <div className="scheduler-grid">
                 {securedAreas.map(area => {
                     const status = getStatus(area.id);
@@ -64,6 +67,7 @@ const Compliance = () => {
                         );
                 })}
             </div>
+       
             
             {activeAreaModal && (
                 <OperationalComplianceModal 
@@ -73,7 +77,9 @@ const Compliance = () => {
                     onClose={()=>setActiveAreaModal(null)}
                 />
             )}
+        </ErrorBoundary>
         </div>
+        
         </>  
     );
 };
