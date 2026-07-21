@@ -29,25 +29,6 @@ const Home = () => {
             </div>
       </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-
-        </div>
-
-        <div id="social"> 
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
         </>
     )
 }
