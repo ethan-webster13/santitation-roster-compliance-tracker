@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
-import '../css/scheduler.css'
 
 const ZoneGatekeeperModal = ({ zoneName, onClose, onComplete, onSaveAndClose, initialData }) => {
     const floorSigRef = useRef(null);

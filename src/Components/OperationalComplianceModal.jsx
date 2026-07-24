@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRoster } from "../context/RosterContext";
 import { SANITIZER_RANGES, isInRange, isQaOk, isUsdaOk, isZoneFullyPassing } from "../utils/complianceRules";
-import '../css/scheduler.css';
 
 
 

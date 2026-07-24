@@ -5,7 +5,6 @@ import NavBar from "../Components/NavBar";
 import FacilityArea from "../Components/scheduler/FacilityArea";
 import EmployeeBadge from "../Components/scheduler/EmployeeBadge";
 import ZoneGatekeeperModal from "../Components/ZoneGatekeeperModal";
-import '../css/scheduler.css';
 
 const Scheduler = () => {
 
@@ -22,8 +21,13 @@ const Scheduler = () => {
         recordComplianceLog,
         zoneDrafts,
         saveZoneDraft, 
-        clearZoneDraft
+        clearZoneDraft,
+        selectedEmployeeId,
+        clearSelection
     } = useRoster();
+
+    // Look up the currently "picked up" worker so we can name them in the hint banner
+    const selectedWorker = liveRoster.find(emp => emp.id === selectedEmployeeId);
     
     const [isHovered, setIsHovered] = useState(false);
     const [activeAreaModal, setActiveAreaModal] = useState(null); //Tracks which area's modal is open
@@ -100,6 +104,12 @@ const Scheduler = () => {
         if (empId) unassignEmployee(empId);
     };
 
+    /* TAP-TO-ASSIGN (touch path): if a worker is selected, tapping the bench
+       sends them back to unassigned. Otherwise the tap is a no-op. */
+    const handleBenchTap = () => {
+        if (selectedEmployeeId !== null) unassignEmployee(selectedEmployeeId);
+    };
+
     return (
         <>
             <NavBar />
@@ -154,14 +164,27 @@ const Scheduler = () => {
 
                 
 
+                {/* ─── TAP-TO-ASSIGN HINT BANNER ─── */}
+                {selectedWorker && (
+                    <div className="selection-banner" role="status" aria-live="polite">
+                        <span>
+                            <strong>{selectedWorker.firstName} {selectedWorker.lastName}</strong> selected — tap a zone to assign, or the bench to unassign.
+                        </span>
+                        <button className="btn-cancel-selection" onClick={clearSelection}>
+                            Cancel
+                        </button>
+                    </div>
+                )}
+
                 {/* ─── AVAILABLE UNASSIGNED BENCH ─── */}
-                <div className={`unassigned-sidebar ${isHovered ? 'drag-hover' : ''}`}
+                <div className={`unassigned-sidebar ${isHovered ? 'drag-hover' : ''} ${selectedEmployeeId !== null ? 'is-targetable' : ''}`}
                     onDragOver={(e) => e.preventDefault()}
                     onDragEnter={() => setIsHovered(true)}
                     onDragLeave={() => setIsHovered(false)}
                     onDrop={handleDropOnBench}
+                    onClick={handleBenchTap}
                 >
-                    <strong>Available Unassigned Crew (Drag here to unassign)</strong>
+                    <strong>Available Unassigned Crew (drag or tap a member, then a zone)</strong>
                     <div className="unassigned-bench">
                         {unassignedWorkers.map(emp => (
                             <EmployeeBadge key={emp.id} employee={emp} />

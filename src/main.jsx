@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RosterProvider } from './context/RosterContext.jsx'
 import { ThemeProvider } from './context/ThemeContext.jsx'
-import './css/index.css'
+import './css/main.css'
 import App from './App.jsx'
 import Roster from './Pages/Roster.jsx'
 

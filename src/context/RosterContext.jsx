@@ -20,14 +20,28 @@ export const RosterProvider = ({ children }) => {
   Why this? A JavaScript object can't have duplicate keys. 
   This makes it physically impossible for an employee to be assigned to two places at once! */
   const [assignments, setAssignments] = useState({});
-  
+
+  /* --- Tap-to-Assign Selection (touch-friendly alternative to drag & drop) ---
+     One "currently selected" employee lives here in Context so the badge (which
+     sets it), the zones (which read it to place someone), and the bench (which
+     reads it to unassign) all share the same source of truth — no prop drilling. */
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+
+  // Tapping a badge selects it; tapping the same badge again cancels the selection
+  const selectEmployee = (empId) => {
+    setSelectedEmployeeId(prev => (prev === empId ? null : empId));
+  };
+
+  const clearSelection = () => setSelectedEmployeeId(null);
+
   // This function removes a worker from the board completely
       const unassignEmployee = (empId) => {
         setAssignments(prev => {
           const updated = {...prev};
           delete updated[empId]; // Erases their location key so they go back to the bench
           return updated;
-        })
+        });
+        setSelectedEmployeeId(null); // reset tap-flow after any unassign
       };
 
   // This function handles placing a worker into a specific slot
@@ -39,6 +53,7 @@ export const RosterProvider = ({ children }) => {
             If they were already scheduled somewhere else, this line just overwrites it.
             Their old assignment vanishes automatically, preventing duplicate worker bugs! */
       }));
+      setSelectedEmployeeId(null); // reset tap-flow once placed
     };
 
   const clearBoard = () => {
@@ -231,7 +246,10 @@ export const RosterProvider = ({ children }) => {
       unassignEmployee,
       toggleAbsence,
       autoAssignWorkers,
-      clearBoard
+      clearBoard,
+      selectedEmployeeId,
+      selectEmployee,
+      clearSelection
       }}>
       {children}
     </RosterContext.Provider>

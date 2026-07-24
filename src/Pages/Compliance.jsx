@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useRoster } from "../context/RosterContext";
 import OperationalComplianceModal from "../Components/OperationalComplianceModal"
 import '../Components/NavBar';
-import '../css/scheduler.css';
 import PlantWaterMetricsPanel from "../Components/PlantWaterMetricsPanel";
 import ErrorBoundary from "../Components/ErrorBoundary";
 
