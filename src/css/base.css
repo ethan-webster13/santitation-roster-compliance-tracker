@@ -1,0 +1,212 @@
+/* ==========================================================================
+   BASE — Reset, app shell, typography, global elements
+   ========================================================================== */
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-main);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease; /* Smooth theme transitions */
+}
+
+/* App layout shell */
+#root {
+  width: 100%;
+  max-width: 1600px; /* Wider bound for complex tables */
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left; /* Critical fix for tables and forms */
+  padding: 0 20px;  /* Edge padding; tightened on mobile in responsive.css */
+}
+
+/* Typography */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+p {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+}
+
+code, .counter {
+  font-family: var(--font-mono);
+  display: inline-flex;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  padding: 4px 8px;
+  background-color: var(--code-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+/* Global action button (base for the whole app) */
+button {
+  font-family: inherit;
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+/* ==========================================================================
+   VITE STARTER REMNANTS — not used by product pages.
+   Retained verbatim (incl. their inline 1024px queries) to avoid surprises.
+   TODO: safe to delete once confirmed unreferenced.
+   ========================================================================== */
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border-color);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border-color);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-primary);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--code-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border-color);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border-color);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border-color);
+  }
+}

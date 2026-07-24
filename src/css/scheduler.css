@@ -1,16 +1,21 @@
-/* --- Core Page Layout --- */
+/* ==========================================================================
+   COMPONENT — Scheduler board, badges, toolbar, pipeline, tap-to-assign
+   (Modal/form styles moved to modal.css; breakpoints moved to responsive.css)
+   ========================================================================== */
+
+/* --- Core page layout --- */
 .scheduler-container {
   padding: 20px;
 }
 
 .scheduler-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Pattern A: 2x2 Main Quadrants */
+  grid-template-columns: 1fr 1fr; /* 2x2 main quadrants; collapses on tablet */
   gap: 24px;
   margin-top: 20px;
 }
 
-/* --- Facility Quadrant Cards --- */
+/* --- Facility quadrant cards --- */
 .facility-area {
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -28,12 +33,12 @@
 
 .shift-zone-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-top: 15px;
 }
 
-/* --- Sub-Zone Workstations --- */
+/* --- Sub-zone workstations --- */
 .shift-zone {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
@@ -59,7 +64,7 @@
   flex-grow: 1;
 }
 
-/* --- Reusable Employee Badges --- */
+/* --- Reusable employee badges --- */
 .employee-badge {
   padding: 6px 10px;
   border-radius: 4px;
@@ -77,26 +82,25 @@
   opacity: 0.8;
 }
 
-/* --- Dynamic Role Theme Modifiers --- */
+/* --- Role theme modifiers --- */
 .role-supervisor {
-  background-color: #f3e5f5; /* Light Purple */
+  background-color: #f3e5f5;
   color: #4a148c;
   border-color: rgba(74, 20, 140, 0.2);
 }
 
 .role-lead {
-  background-color: #e3f2fd; /* Light Blue */
+  background-color: #e3f2fd;
   color: #0d47a1;
   border-color: rgba(13, 71, 161, 0.2);
 }
 
 .role-laborer {
-  background-color: #f1f8e9; /* Light Green */
+  background-color: #f1f8e9;
   color: #33691e;
   border-color: rgba(51, 105, 30, 0.2);
 }
 
-/* Dark Mode Badge Overrides */
 body.dark-theme .role-supervisor {
   background-color: rgba(171, 71, 188, 0.15);
   color: #ce93d8;
@@ -115,8 +119,7 @@ body.dark-theme .role-laborer {
   border-color: rgba(165, 214, 167, 0.3);
 }
 
-
-/* --- Drag and Drop Usability Enhancements --- */
+/* --- Drag & drop usability (desktop path) --- */
 .unassigned-sidebar {
   background-color: var(--bg-surface);
   border: 2px dashed var(--border-color);
@@ -146,7 +149,7 @@ body.dark-theme .role-laborer {
 }
 
 .shift-zone.drag-hover {
-  background-color: rgba(253, 216, 53, 0.15) !important; /* Adapted to be translucent for both themes */
+  background-color: rgba(253, 216, 53, 0.15) !important;
   border-color: #fbc02d !important;
 }
 
@@ -156,449 +159,253 @@ body.dark-theme .role-laborer {
 }
 
 /* ==========================================================================
-   Management Action Toolbar & Layout Controls
+   Tap-to-Assign (touch path) — click/tap a badge, then a zone
    ========================================================================== */
 
-.scheduler-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 15px;
+/* The "picked up" badge: a clear ring so the user knows who is selected */
+.employee-badge.is-selected {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+  box-shadow: var(--shadow-md);
+  transform: scale(1.02);
 }
 
-.toolbar-container {
-    display: flex;
-    gap: 12px;
-    align-items: center;
+/* Keyboard focus visibility (badges and targetable zones are focusable) */
+.employee-badge:focus-visible,
+.shift-zone.is-targetable:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* Common toolbar button specifications */
-.toolbar-container button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+/* While a badge is selected, valid drop targets advertise themselves */
+.shift-zone.is-targetable {
+  border-style: dashed;
+  border-color: var(--accent);
+  cursor: pointer;
 }
 
-.toolbar-container button:not(:disabled) {
-    cursor: pointer;
+.shift-zone.is-targetable:hover {
+  background-color: var(--accent-bg);
 }
 
-/* Global button state handling via browser engine overrides */
-.toolbar-container button:disabled {
-    background-color: var(--bg-surface) !important;
-    color: var(--text-secondary) !important;
-    border: 1px solid var(--border-color) !important;
-    cursor: not-allowed;
-    box-shadow: none;
+.unassigned-sidebar.is-targetable {
+  border-color: var(--accent);
+  cursor: pointer;
 }
 
-/* 🗑️ Clear Board Button Settings */
-.btn-clear {
-    padding: 10px 16px !important;
-    background-color: rgba(207, 19, 34, 0.1);
-    color: #cf1322;
-    border: 1px solid rgba(207, 19, 34, 0.3) !important;
+/* Hint banner naming the selected worker */
+.selection-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background-color: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
 }
 
-body.dark-theme .btn-clear {
-    color: #ffccc7;
+.btn-cancel-selection {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
 }
 
-.btn-clear:hover:not(:disabled) {
-    background-color: rgba(207, 19, 34, 0.2);
-}
-
-/* ⚡ Auto-Assign Button Settings */
-.btn-auto {
-    background-color: #6200ee;
-    color: white;
-}
-
-.btn-auto:hover:not(:disabled) {
-    background-color: #4b00b4;
-    box-shadow: var(--shadow-sm);
-}
-
-/* 💾 Log Shift Layout Wrapper */
-.log-shift-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.btn-log {
-    background-color: #2e7d32;
-    color: white;
-}
-
-.btn-log:hover:not(:disabled) {
-    background-color: #1b5e20;
-    box-shadow: var(--shadow-sm);
-}
-
-/* Status Messaging Context Signals */
-.status-message {
-    font-size: 0.8rem;
-    margin-top: 5px;
-    font-weight: 500;
-}
-
-.status-message.ready {
-    color: #4caf50;
-}
-
-.status-message.pending {
-    color: #ef5350;
-}
-
-.bench-empty-text {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+.btn-cancel-selection:hover {
+  background-color: var(--accent);
+  color: #ffffff;
 }
 
 /* ==========================================================================
-   Edit Employee Modal - Professional UI
+   Management action toolbar
    ========================================================================== */
-
-/* Modal Backdrop */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(15, 23, 42, 0.6); 
-    backdrop-filter: blur(4px); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    overflow-y: auto;
-    padding: 40px 0;
+.scheduler-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 15px;
 }
 
-.modal-card {
-    background-color: var(--bg-surface);
-    color: var(--text-primary);
-    padding: 32px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: var(--shadow-md);
-    font-family: system-ui, -apple-system, sans-serif;
-    max-height: 90vh;
-    overflow-y: auto;
+.toolbar-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-/* Typography */
-.modal-card h3 {
-    margin: 0 0 8px 0;
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    font-weight: 600;
+.toolbar-container button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-.modal-subtitle {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-top: 0;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 16px;
+.toolbar-container button:not(:disabled) {
+  cursor: pointer;
 }
 
-/* Form Layout */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
+.toolbar-container button:disabled {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-.form-group label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: var(--text-primary);
+.btn-clear {
+  padding: 10px 16px !important;
+  background-color: rgba(207, 19, 34, 0.1);
+  color: #cf1322;
+  border: 1px solid rgba(207, 19, 34, 0.3) !important;
 }
 
-/* Uniform Inputs and Selects */
-.form-group input,
-.form-select {
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    background-color: var(--bg-surface);
-    transition: all 0.2s ease;
-    font-family: inherit;
-    width: 100%;
-    box-sizing: border-box; 
+body.dark-theme .btn-clear {
+  color: #ffccc7;
 }
 
-/* Select specific styling */
-.form-select {
-    cursor: pointer;
-    appearance: auto; 
+.btn-clear:hover:not(:disabled) {
+  background-color: rgba(207, 19, 34, 0.2);
 }
 
-/* Focus States for Accessibility and Polish */
-.form-group input:focus,
-.form-select:focus {
-    border-color: #2563eb; 
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); 
+.btn-auto {
+  background-color: #6200ee;
+  color: white;
 }
 
-/* Action Buttons */
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 32px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+.btn-auto:hover:not(:disabled) {
+  background-color: #4b00b4;
+  box-shadow: var(--shadow-sm);
 }
 
-.modal-actions button {
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.log-shift-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
-.btn-cancel {
-    background-color: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color) !important;
+.btn-log {
+  background-color: #2e7d32;
+  color: white;
 }
 
-.btn-cancel:hover {
-    background-color: var(--border-color);
-    color: var(--text-primary);
+.btn-log:hover:not(:disabled) {
+  background-color: #1b5e20;
+  box-shadow: var(--shadow-sm);
 }
 
-.btn-save {
-    background-color: #2563eb;
-    color: #ffffff;
-    box-shadow: var(--shadow-sm);
+.status-message {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  font-weight: 500;
 }
 
-.btn-save:hover {
-    background-color: #1d4ed8;
-    box-shadow: var(--shadow-md);
+.status-message.ready {
+  color: #4caf50;
 }
 
-/* Toggle Button Styling */
-.btn-theme-toggle {
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 4px 8px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: var(--text-primary);
-    transition: all 0.2s;
+.status-message.pending {
+  color: #ef5350;
 }
 
-.modal-card-lg {
-    max-width: 600px; /* Safe, responsive boundary instead of vmax */
-    width: 90%;
+.bench-empty-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-.step-header {
-    color: var(--accent);
-    margin: 0 0 16px 0;
-    font-size: 1.1rem;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 8px;
-}
-
-.alert-header {
-    color: #ef4444;
-    border-bottom-color: rgba(239, 68, 68, 0.3);
-}
-
-.input-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-/* --- Signature Pad Formatting --- */
-.sig-pad-wrapper {
-    border: 2px dashed var(--border-color);
-    border-radius: 6px;
-    background-color: #ffffff; /* Always white so black/red ink is visible */
-    margin-bottom: 8px;
-    overflow: hidden;
-}
-
-.sig-pad {
-    width: 100%;
-    height: 150px;
-    touch-action: none; /* Crucial for mobile drawing */
-    cursor: crosshair;
-}
-
-/* --- Clear Pad Button (Signature Pad) --- */
-.btn-clear-pad {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    color: #ef4444; 
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: underline;
-    margin-bottom: 16px;
-    padding: 4px 8px;
-    transition: color 0.2s ease;
-    opacity: 1 !important; 
-    visibility: visible !important;
-}
-
-/* Transitions to the sharp, dark text color on hover */
-.btn-clear-pad:hover {
-    color: var(--text-primary, #111827); 
-}
-
-/* Optional: Keeps it vivid but legible if you implement a dark theme */
-body.dark-theme .btn-clear-pad {
-    color: #f87171; /* A slightly lighter red so it pops against dark backgrounds */
-}
-
-body.dark-theme .btn-clear-pad:hover {
-    color: var(--text-primary, #f3f4f6);
-}
-
-/* --- LOTO Specific Styling --- */
-.loto-checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background-color: rgba(239, 68, 68, 0.05);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 6px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
-
-.loto-checkbox-wrapper input {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.loto-checkbox-wrapper span {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #b91c1c;
-}
-
-.btn-danger {
-    background-color: #ef4444;
-}
-
-.btn-danger:hover {
-    background-color: #dc2626;
-}
-
-/* Dark Theme Adjustments for the Pad */
-body.dark-theme .sig-pad-wrapper {
-    border-color: #475569;
-    /* Keeping background white internally for ink contrast, 
-       or use a very light gray if #fff is too harsh at night */
-    background-color: #f8fafc; 
-}
-
+/* ==========================================================================
+   Pipeline stepper (compliance metrics)
+   ========================================================================== */
 .pipeline-stepper {
-    display: flex;
-    align-items: center;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    overflow-x: auto;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  overflow-x: auto;
 }
 
 .pipeline-stage-wrap {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    min-width: 0;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .pipeline-stage {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
 }
 
 .pipeline-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background-color: var(--border-color);
-    color: var(--text-secondary);
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: var(--border-color);
+  color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .pipeline-stage.stage-complete .pipeline-icon {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: #10b981;
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
 }
 
 .pipeline-stage-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
 }
 
 .pipeline-stage-label {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .pipeline-stage-value {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .pipeline-connector {
-    flex: 1;
-    height: 2px;
-    background-color: var(--border-color);
-    margin: 0 12px;
-    min-width: 20px;
+  flex: 1;
+  height: 2px;
+  background-color: var(--border-color);
+  margin: 0 12px;
+  min-width: 20px;
 }
 
+/* Text-only status colors for .metric-status.
+   NOTE: bare `.status-good` / `.status-alert` also exist in dashboard.css as
+   card border styles — see the collision note there. */
 .metric-status {
-    font-size: 0.95rem;
-    font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .status-good {
-    color: #10b981;
+  color: #10b981;
 }
 
 .status-alert {
-    color: #ef5350;
+  color: #ef5350;
 }

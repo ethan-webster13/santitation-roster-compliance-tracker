@@ -1,0 +1,149 @@
+/* ==========================================================================
+   RESPONSIVE — All product breakpoints, single source of truth.
+   Loaded LAST in main.css so these overrides reliably win the cascade.
+   Organized desktop-first, largest → smallest.
+   (Vite-starter remnants keep their own inline 1024px queries in base.css.)
+   ========================================================================== */
+
+/* ===== <= 900px — Tablet landscape ==========================================
+   The 2x2 scheduler board is too dense; stack facility areas full-width. Each
+   area keeps its internal 2-column zone grid, which now has room to breathe. */
+@media (max-width: 900px) {
+  .scheduler-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* ===== <= 768px — Tablet portrait ===========================================
+   Let the nav wrap; stop the scheduler title colliding with its toolbar. */
+@media (max-width: 768px) {
+  #root {
+    padding: 0 16px;
+  }
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .navBar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .scheduler-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .toolbar-container {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .log-shift-group {
+    align-items: stretch;
+  }
+}
+
+/* ===== <= 640px — Large phone ================================================
+   The 5-column roster table can't fit — make it horizontally scrollable.
+   (Remove this rule if you wrap the table in <div className="table-scroll">.) */
+@media (max-width: 640px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+}
+
+/* ===== <= 600px — Phone =====================================================
+   Single-column zones and modal grids; full-width toolbar controls. */
+@media (max-width: 600px) {
+  .scheduler-container {
+    padding: 12px;
+  }
+  .shift-zone-grid {
+    grid-template-columns: 1fr;
+  }
+  .input-grid {
+    grid-template-columns: 1fr;
+  }
+  .toolbar-container {
+    width: 100%;
+  }
+  .toolbar-container button {
+    flex: 1 1 auto;
+  }
+
+  /* Modal breathing room + safe height on short viewports */
+  .modal-overlay {
+    padding: 16px;
+  }
+  .modal-card,
+  .modal-card-lg {
+    padding: 24px 20px;
+    width: 100%;
+    max-height: 92vh;
+  }
+
+  /* Selection banner stacks so the Cancel button stays reachable */
+  .selection-banner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
+
+/* ===== <= 480px — Small phone ===============================================
+   Reclaim edge space, stack the nav, and guarantee ~44px touch targets. */
+@media (max-width: 480px) {
+  #root {
+    padding: 0 12px;
+  }
+  body {
+    font-size: 15px;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  /* WCAG-recommended minimum touch target on every button */
+  button {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  /* Stack the nav into full-width, thumb-friendly rows */
+  .navBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .navBar a,
+  .navBar button {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    min-height: 44px;
+  }
+  .navBar a {
+    background: var(--code-bg);
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Single-column KPI cards beat a squeezed grid */
+  .metrics-container {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 18px 0;
+  }
+}

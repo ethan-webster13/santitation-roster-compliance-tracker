@@ -1,0 +1,256 @@
+/* ==========================================================================
+   COMPONENT — Modals & Form controls (SHARED, deduplicated)
+   Previously duplicated across roster.css and scheduler.css with diverging
+   values. This is the single source of truth. All values are variable-based so
+   dark mode works via body.dark-theme (the old roster copy used a
+   .modal-card.dark-theme class that the app never applied — that dark mode was
+   effectively dead; this fixes it).
+   ========================================================================== */
+
+/* Backdrop */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 40px 0;
+}
+
+/* Container */
+.modal-card {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 32px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-md);
+  font-family: system-ui, -apple-system, sans-serif;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-card-lg {
+  max-width: 600px;
+  width: 90%;
+}
+
+/* Typography */
+.modal-card h3 {
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.step-header {
+  color: var(--accent);
+  margin: 0 0 16px 0;
+  font-size: 1.1rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.alert-header {
+  color: #ef4444;
+  border-bottom-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Form layout */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.form-group input,
+.form-select {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+.form-group input:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Action buttons */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color) !important;
+}
+
+.btn-cancel:hover {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-save {
+  background-color: #2563eb;
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-save:hover {
+  background-color: #1d4ed8;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-danger {
+  background-color: #ef4444;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+.btn-theme-toggle {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+/* --- Signature pad --- */
+.sig-pad-wrapper {
+  border: 2px dashed var(--border-color);
+  border-radius: 6px;
+  background-color: #ffffff; /* Always white so black/red ink is visible */
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.sig-pad {
+  width: 100%;
+  height: 150px;
+  touch-action: none; /* Crucial for mobile drawing */
+  cursor: crosshair;
+}
+
+.btn-clear-pad {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-bottom: 16px;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.btn-clear-pad:hover {
+  color: var(--text-primary, #111827);
+}
+
+body.dark-theme .btn-clear-pad {
+  color: #f87171;
+}
+
+body.dark-theme .btn-clear-pad:hover {
+  color: var(--text-primary, #f3f4f6);
+}
+
+body.dark-theme .sig-pad-wrapper {
+  border-color: #475569;
+  background-color: #f8fafc;
+}
+
+/* --- LOTO confirmation --- */
+.loto-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background-color: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.loto-checkbox-wrapper input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.loto-checkbox-wrapper span {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #b91c1c;
+}

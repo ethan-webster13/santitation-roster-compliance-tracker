@@ -1,0 +1,46 @@
+/* ==========================================================================
+   TOKENS — Design system variables (Settings layer)
+   The single source of truth for color, type, shadow. Theme switching works by
+   swapping these variables on body.dark-theme; components never hardcode hex.
+   ========================================================================== */
+:root {
+  /* Backgrounds */
+  --bg-main: #f8fafc;        /* App background */
+  --bg-surface: #ffffff;     /* Cards, modals, tables */
+
+  /* Text */
+  --text-primary: #0f172a;   /* Headings, main text */
+  --text-secondary: #475569; /* Subtitles, labels */
+
+  /* Borders & Accents */
+  --border-color: #e2e8f0;   /* Dividers, table borders */
+  --accent: #2563eb;         /* Primary brand color (Operational Blue) */
+  --accent-hover: #1d4ed8;
+  --accent-bg: rgba(37, 99, 235, 0.1);
+  --code-bg: #f1f5f9;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Typography */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+}
+
+/* Global Dark Mode Overrides (toggled on <body> by ThemeContext) */
+body.dark-theme {
+  --bg-main: #0f172a;        /* Deep slate background */
+  --bg-surface: #1e293b;     /* Elevated dark surface */
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+
+  --border-color: #334155;
+  --accent: #3b82f6;         /* Lighter blue for dark contrast */
+  --accent-hover: #60a5fa;
+  --accent-bg: rgba(59, 130, 246, 0.15);
+  --code-bg: #1e293b;
+
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+}

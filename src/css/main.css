@@ -1,0 +1,23 @@
+/* ==========================================================================
+   MAIN — CSS entry / manifest (imported once, in main.jsx)
+   @import order defines the cascade (ITCSS-lite):
+     Settings → Base → Components → Overrides(responsive)
+   This is the ONLY stylesheet the app imports, guaranteeing a deterministic
+   load order — which is what lets responsive.css reliably override everything.
+   ========================================================================== */
+
+/* 1. Settings — design tokens */
+@import './tokens.css';
+
+/* 2. Base — reset, shell, typography, global elements */
+@import './base.css';
+
+/* 3. Components */
+@import './navbar.css';
+@import './dashboard.css';
+@import './table.css';
+@import './modal.css';
+@import './scheduler.css';
+
+/* 4. Overrides — all responsive breakpoints (must stay last) */
+@import './responsive.css';
